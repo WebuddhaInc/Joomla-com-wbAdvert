@@ -307,3 +307,5 @@ switch ($task) {
 
 }
 
+// Administrator Heading
+wbAdvert_Common::adminFooter();

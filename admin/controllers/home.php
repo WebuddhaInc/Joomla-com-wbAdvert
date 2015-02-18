@@ -31,8 +31,6 @@ function home_display( $option, $task ){
 
   $wbAdvert_config = wbAdvert_config::getInstance();
 
-  print_r($_REQUEST);
-
   ?>
     <script type="text/javascript">
     <!--
@@ -173,39 +171,39 @@ function home_display( $option, $task ){
       <h1>wbAdvert Advanced Advertisement Management System<br/><small>Version <?php echo $wbAdvert_config->getAppXmlVal('version') ?>, <?php echo $wbAdvert_config->getAppXmlVal('copyright') ?></small></h1>
       <div class="wbToolBar">
         <div class="icon">
-          <a href="index.php?option=<?php echo $option ?>&task=advert">
-          <img src="<?php echo JURI::root() ?>/administrator/components/<?php echo $option ?>/images/icon_media.png" />
+          <a href="index.php?option=com_wbadvert&task=advert">
+          <img src="<?php echo JURI::root() ?>administrator/components/com_wbadvert/inc/img/icon_media.png" />
           <h2><?php echo JText::_('COM_WBADVERT_MENU_ADVERT'); ?></h2>
           <div style="clear:both;"></div>
           </a>
         </div>
         <div class="icon">
-          <a href="index.php?option=<?php echo $option ?>&task=campaign">
-          <img src="<?php echo JURI::root() ?>/administrator/components/<?php echo $option ?>/images/icon_campaign.png" />
+          <a href="index.php?option=com_wbadvert&task=campaign">
+          <img src="<?php echo JURI::root() ?>administrator/components/com_wbadvert/inc/img/icon_campaign.png" />
           <h2><?php echo JText::_('COM_WBADVERT_MENU_CAMPAIGN'); ?></h2>
           <div style="clear:both;"></div></a>
         </div>
         <div class="icon">
-          <a href="index.php?option=<?php echo $option ?>&task=keyword">
-          <img src="<?php echo JURI::root() ?>/administrator/components/<?php echo $option ?>/images/icon_keyword.png" />
+          <a href="index.php?option=com_wbadvert&task=keyword">
+          <img src="<?php echo JURI::root() ?>administrator/components/com_wbadvert/inc/img/icon_keyword.png" />
           <h2><?php echo JText::_('COM_WBADVERT_MENU_KEYWORD'); ?></h2>
           <div style="clear:both;"></div></a>
         </div>
         <div class="icon">
-          <a href="index.php?option=<?php echo $option ?>&task=group">
-          <img src="<?php echo JURI::root() ?>/administrator/components/<?php echo $option ?>/images/icon_category.png" />
+          <a href="index.php?option=com_wbadvert&task=group">
+          <img src="<?php echo JURI::root() ?>administrator/components/com_wbadvert/inc/img/icon_category.png" />
           <h2><?php echo JText::_('COM_WBADVERT_MENU_GROUP'); ?></h2>
           <div style="clear:both;"></div></a>
         </div>
         <div class="icon">
-          <a href="index.php?option=<?php echo $option ?>&task=client">
-          <img src="<?php echo JURI::root() ?>/administrator/components/<?php echo $option ?>/images/icon_client.png" />
+          <a href="index.php?option=com_wbadvert&task=client">
+          <img src="<?php echo JURI::root() ?>administrator/components/com_wbadvert/inc/img/icon_client.png" />
           <h2><?php echo JText::_('COM_WBADVERT_MENU_CLIENT'); ?></h2>
           <div style="clear:both;"></div></a>
         </div>
         <div class="icon">
-          <a href="index.php?option=<?php echo $option ?>&task=config">
-          <img src="<?php echo JURI::root() ?>/administrator/components/<?php echo $option ?>/images/icon_config.png" />
+          <a href="index.php?option=com_wbadvert&task=config">
+          <img src="<?php echo JURI::root() ?>administrator/components/com_wbadvert/inc/img/icon_config.png" />
           <h2><?php echo JText::_('COM_WBADVERT_MENU_CONFIG'); ?></h2>
           <div style="clear:both;"></div></a>
         </div>
@@ -244,7 +242,7 @@ function home_display( $option, $task ){
       </p>
       <p>Go Joomla! Open-Source, and Collaboration! <grin></p>
       <p><a href="http://www.webuddha.com/" target="_blank" title="Visit Webuddha in a New Window">
-        <img src="<?php echo JURI::root() ?>/administrator/components/<?php echo $option ?>/images/webuddha_logo.jpg" border="0" /></a></p>
+        <img src="<?php echo JURI::root() ?>administrator/components/com_wbadvert/inc/img/webuddha_logo.jpg" border="0" /></a></p>
     </div>
   <?php
 }

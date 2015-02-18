@@ -27,7 +27,9 @@ defined( '_JEXEC' ) or die('Access Denied');
 
 // ------------------------------------------------------------------------ client_list
 function client_list( $option, $task ) {
-  $app = JFactory::getApplication();
+
+  // System
+    $app = JFactory::getApplication();
 
   // Get List Limits
     $limit = $app->getUserStateFromRequest( "viewlistlimit", 'limit', $app->getCfg('list_limit') );
@@ -224,10 +226,10 @@ class HTML_wbAdvert_client {
       .adminlist tbody td:nth-child(8),
       .adminlist tbody td:last-child { text-align:center!important; }
     //--></style>
-    <form action="index.php" method="post" name="adminForm">
+    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=client'); ?>" method="post" name="adminForm" id="adminForm">
       <input type="hidden" name="filter_order" value="<?php echo $lists['order']; ?>" />
       <input type="hidden" name="filter_order_Dir" value="<?php echo $lists['order_Dir']; ?>" />
-      <table class="adminlist">
+      <table class="adminList table table-striped" id="wbadvertList">
         <thead>
           <tr>
             <th width="20">#</th>
@@ -279,14 +281,13 @@ class HTML_wbAdvert_client {
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="9"><?php echo $pageNav->getListFooter(); ?></td>
+            <td colspan="13"><?php echo $pageNav->getListFooter(); ?></td>
           </tr>
         </tfoot>
       </table>
-      <input type="hidden" name="option" value="<?php echo $option; ?>">
       <input type="hidden" name="task" value="client">
       <input type="hidden" name="boxchecked" value="0">
-      <input type="hidden" name="hidemainmenu" value="0">
+      <?php echo JHtml::_('form.token'); ?>
     </form>
     <?php
   }
@@ -313,8 +314,8 @@ class HTML_wbAdvert_client {
     }
     //-->
     </script>
-    <form action="index.php" method="post" name="adminForm">
-      <table class="adminheading">
+    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=client.edit&id='.$row->id); ?>" method="post" name="adminForm" id="adminForm">
+      <table class="adminHeading" width="100%">
         <tr><th class="icon-48-user">
           <?php echo $row->id ? JText::sprintf('HEAD_CLIENTEDIT',$row->name) : JText::_('HEAD_CLIENTNEW');?><br/>
           <font size="-1"><?php

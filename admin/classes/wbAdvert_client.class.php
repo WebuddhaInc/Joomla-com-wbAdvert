@@ -40,8 +40,6 @@ class wbAdvert_client extends JTable {
 
   function __construct( &$_db ){
     parent::__construct( '#__wbadvert_client', 'id', $_db );
-    // $now =& JFactory::getDate();
-    // $this->set( 'date', $now->toMySQL() );
   }
 
   function check() {

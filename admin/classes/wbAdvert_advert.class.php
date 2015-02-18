@@ -55,8 +55,7 @@ class wbAdvert_advert extends JTable {
   // ************************************************************************************************************************************************************
   function __construct( &$_db ){
     parent::__construct( '#__wbadvert_advert', 'id', $_db );
-    $now =& JFactory::getDate();
-    $this->set('modified', $now->toMySQL());
+    $this->set( 'modified', JFactory::getDate()->toSql() );
   }
 
   // ************************************************************************************************************************************************************
@@ -267,7 +266,6 @@ class wbAdvert_advert extends JTable {
     }
 
     // Check File Permissions
-    // $ad_path = preg_replace('/\\\/','/',JPATH_ROOT.DS.$wbAdvert_config->get('ad_path'));
     $ad_path = $wbAdvert_config->getAdPath();
     if( !wbAdvert_Common::isWritable($ad_path) ){
       $this->setError( JText::sprintf('ERR_FILEWRITEFAIL', $wbAdvert_config->getAdPath(false)) );

@@ -579,7 +579,7 @@ class HTML_wbAdvert {
       <?php } ?>
       .adminlist tbody td { vertical-align:top; }
     //--></style>
-    <form action="index.php" method="post" name="adminForm">
+    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=advert'); ?>" method="post" name="adminForm" id="adminForm">
       <input type="hidden" name="filter_order" value="<?php echo $lists['order']; ?>" />
       <input type="hidden" name="filter_order_Dir" value="<?php echo $lists['order_Dir']; ?>" />
       <table width="100%" class="adminheading">
@@ -597,7 +597,7 @@ class HTML_wbAdvert {
           </td>
         </tr>
       </table>
-      <table class="adminlist">
+      <table class="adminList table table-striped" id="wbadvertList">
         <thead>
           <tr>
             <th nowrap><?php echo JText::_('Num') ?></th>
@@ -708,11 +708,11 @@ class HTML_wbAdvert {
           </tr>
         </tfoot>
       </table>
-      <input type="hidden" name="option" value="<?php echo $option; ?>">
       <input type="hidden" name="task" value="advert">
       <input type="hidden" name="boxchecked" value="0">
-      <input type="hidden" name="hidemainmenu" value="0">
+      <?php echo JHtml::_('form.token'); ?>
     </form>
+
     <?php
   }
 
@@ -777,120 +777,129 @@ class HTML_wbAdvert {
       .adminform textarea.idx_content { width:400px;height:80px; }
       .adminform textarea.code { width:360px;height:140px; }
     //--></style>
-    <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data">
-      <table class="adminheading">
+    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=group.edit&id='.$row->id); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+      <table class="adminHeading" width="100%">
         <tr><th class="icon-48-mediamanager">
           <?php echo $row->id ? JText::sprintf('HEAD_ADVERTEDIT',$row->name) : JText::_('HEAD_ADVERTNEW');?><br/>
           <font size="-1"><?php echo ($row->id ? JText::_('LBL_ADVERTLINK').': <a href="'.JURI::root().'index.php?option='.$option.'&task=load&id='.$row->id.'" target="_blank">index.php?option='.$option.'&task=load&id='.$row->id.'</a>' : '&nbsp;') ?></font>
         </th></tr>
       </table>
-      <table width="100%">
-        <tr><td valign="top" width="5%">
-          <table class="adminform">
-            <tr><th colspan="2"><?php echo JText::_('SET_ADVERTDETAIL') ?></th></tr>
-            <tr>
-              <td width="1%"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_ADVERTNAME'), JText::_('FLD_ADVERTNAME_TIP') ); ?></td>
-              <td><input class="inputbox" type="text" name="name" size="30" value="<?php echo $row->name ?>"></td>
-            </tr>
-            <tr>
-              <td valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_ADVERTGROUPIDX'), JText::_('FLD_ADVERTGROUPIDX_TIP') ); ?></td>
-              <td><?php echo $lists['idx_group']; ?></td>
-            </tr>
-            <tr>
-              <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_ADVERTCLIENT'), JText::_('FLD_ADVERTCLIENT_TIP') ); ?></td>
-              <td><?php echo $lists['client_id']; ?></td>
-            </tr>
-            <tr>
-              <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_PUBLISHED'), JText::_('FLD_PUBLISHED_TIP') ); ?></td>
-              <td><?php echo $lists['published']; ?></td>
-            </tr>
-            <tr>
-              <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_IMPTOTAL'), JText::_('FLD_IMPTOTAL_TIP') ); ?></td>
-              <td><input class="inputbox" type="text" name="imptotal" size="12" maxlength="11" value="<?php echo $row->imptotal ? $row->imptotal : null ?>">
-                <span><?php echo JText::_('FLD_IMPTOTAL_NOTE') ?></span></td>
-            </tr>
-            <tr>
-              <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_IMPMADE'), JText::_('FLD_IMPMADE_TIP') ); ?></td>
-              <td>
-                <?php
-                  echo '<b> '.(int)$row->impmade.' </b>';
-                  if( $row->id )
-                    echo '&nbsp;&nbsp;&nbsp;<input type="button" onClick="submitbutton(\'advert.reset\');" value="'.JText::_('BTN_RESETCOUNTER').'" />';
-                ?></td>
-            </tr>
-            <tr>
-              <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DATESTART'), JText::_('FLD_DATESTART_TIP') ); ?></td>
-              <td><?php echo JHTML::_('calendar', $row->date_start, 'date_start', 'date_start_cal', '%Y-%m-%d', array('class' => 'inputbox')) ?></td>
-            </tr>
-            <tr>
-              <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DATESTOP'), JText::_('FLD_DATESTOP_TIP') ); ?></td>
-              <td><?php echo JHTML::_('calendar', $row->date_stop, 'date_stop', 'date_stop_cal', '%Y-%m-%d', array('class' => 'inputbox')) ?></td>
-            </tr>
-            <tr><th colspan="2"><?php echo JText::_('SET_ADVERTMEDIA') ?></th></tr>
-            <tr>
-              <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_URL'), JText::_('FLD_URL_TIP') ); ?></td>
-              <td><input class="inputbox" type="text" name="url" size="30" maxlength="200" value="<?php echo $row->url ?>"></td>
-            </tr>
-            <tr>
-              <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_TARGET'), JText::_('FLD_TARGET_TIP') ); ?></td>
-              <td><?php echo $lists['target'] ?></td>
-            </tr>
-            <tr>
-              <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_CAPTION'), JText::_('FLD_CAPTION_TIP') ); ?></td>
-              <td><input class="inputbox" type="text" name="caption" size="30" maxlength="200" value="<?php echo $row->caption ?>"></td>
-            </tr>
-            <tr>
-              <td nowrap valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_UPLOADFILE'), JText::_('FLD_UPLOADFILE_TIP') ); ?></td>
-              <td>
-                <input class="inputbox" type="file" name="advert_file" size="30" /><br/>
-                <span><?php echo JText::_('FLD_UPLOADFILE_NOTE'); ?></span>
-              </td>
-            </tr>
-            <tr>
-              <td nowrap valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DIMENSIONS'), JText::_('FLD_DIMENSIONS_TIP') ); ?></td>
-              <td>
-                <input class="inputbox" type="text" name="width" size="5" value="<?php echo $row->width ?>" onkeypress="dimCheck(this);" onchange="dimCheck(this);" /> x
-                <input class="inputbox" type="text" name="height" size="5" value="<?php echo $row->height ?>" onkeypress="dimCheck(this);" onchange="dimCheck(this);" /><br/>
-                <input type="checkbox" id="constrain" name="constrain" <?php echo $row->height && $row->width ? 'checked' : '' ?>> <label for="constrain"><?php echo JText::_('CHK_CONSTRAIN') ?></label>
-              </td>
-            </tr>
-            <tr><th colspan="2"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_CODE'), JText::_('FLD_CODE_TIP') ); ?></th></tr>
-            <tr><td colspan="2"><textarea class="inputbox code" name="code"><?php echo $row->code ?></textarea></td></tr>
-          </table>
-        </td>
-        <td valign="top" width="95%">
-          <table class="adminform">
-            <colgroup><col style="width:120px;"/></colgroup>
-            <tr><th colspan="2"><?php echo JText::_('SET_ADVERTFILTERS') ?></th></tr>
-            <tr>
-              <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_WEEKDAYS'), JText::_('FLD_WEEKDAYS_TIP') ); ?></td>
-              <td><?php echo $lists['weekdays']; ?></td>
-            </tr>
-            <tr>
-              <td>
-                <?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_TIMESTART'), JText::_('FLD_TIMESTART_TIP') ); ?> /
-                <?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_TIMESTOP'), JText::_('FLD_TIMESTOP_TIP') ); ?>
-                </td>
-              <td>
-                <?php echo $lists['time_start']; ?> /
-                <?php echo $lists['time_stop']; ?>
-                </td>
-            </tr>
-            <tr>
-              <td valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_IDXMENU'), JText::_('FLD_IDXMENU_TIP') ); ?></td>
-              <td><?php echo $lists['idx_menu']; ?></td>
-            </tr>
-            <tr>
-              <td valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_IDXCATEGORY'), JText::_('FLD_IDXCATEGORY_TIP') ); ?></td>
-              <td><?php echo $lists['idx_category']; ?></td>
-            </tr>
-            <tr>
-              <td valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_IDXCONTENT'), JText::_('FLD_IDXCONTENT_TIP') ); ?></td>
-              <td><textarea class="inputbox idx_content" name="idx_content"><?php echo $row->idx_content ?></textarea></td>
-            </tr>
-          </table>
-        </td></tr>
-      </table>
+      <div class="col100">
+        <table class="adminTable" width="100%">
+          <tr><td valign="top" width="50%">
+            <fieldset class="adminForm">
+              <legend><?php echo JText::_('SET_ADVERTDETAIL') ?></legend>
+              <table class="adminTable" width="100%">
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_ADVERTNAME'), JText::_('FLD_ADVERTNAME_TIP') ); ?></td>
+                  <td><input class="inputbox" type="text" name="name" size="30" value="<?php echo $row->name ?>"></td>
+                </tr>
+                <tr>
+                  <td valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_ADVERTGROUPIDX'), JText::_('FLD_ADVERTGROUPIDX_TIP') ); ?></td>
+                  <td><?php echo $lists['idx_group']; ?></td>
+                </tr>
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_ADVERTCLIENT'), JText::_('FLD_ADVERTCLIENT_TIP') ); ?></td>
+                  <td><?php echo $lists['client_id']; ?></td>
+                </tr>
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_PUBLISHED'), JText::_('FLD_PUBLISHED_TIP') ); ?></td>
+                  <td><?php echo $lists['published']; ?></td>
+                </tr>
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_IMPTOTAL'), JText::_('FLD_IMPTOTAL_TIP') ); ?></td>
+                  <td><input class="inputbox" type="text" name="imptotal" size="12" maxlength="11" value="<?php echo $row->imptotal ? $row->imptotal : null ?>">
+                    <span><?php echo JText::_('FLD_IMPTOTAL_NOTE') ?></span></td>
+                </tr>
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_IMPMADE'), JText::_('FLD_IMPMADE_TIP') ); ?></td>
+                  <td>
+                    <?php
+                      echo '<b> '.(int)$row->impmade.' </b>';
+                      if( $row->id )
+                        echo '&nbsp;&nbsp;&nbsp;<input type="button" onClick="submitbutton(\'advert.reset\');" value="'.JText::_('BTN_RESETCOUNTER').'" />';
+                    ?></td>
+                </tr>
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DATESTART'), JText::_('FLD_DATESTART_TIP') ); ?></td>
+                  <td><?php echo JHTML::_('calendar', $row->date_start, 'date_start', 'date_start_cal', '%Y-%m-%d', array('class' => 'inputbox')) ?></td>
+                </tr>
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DATESTOP'), JText::_('FLD_DATESTOP_TIP') ); ?></td>
+                  <td><?php echo JHTML::_('calendar', $row->date_stop, 'date_stop', 'date_stop_cal', '%Y-%m-%d', array('class' => 'inputbox')) ?></td>
+                </tr>
+              </table>
+            </fieldset>
+            <fieldset class="adminForm">
+              <legend><?php echo JText::_('SET_ADVERTMEDIA') ?></legend>
+              <table class="adminTable" width="100%">
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_URL'), JText::_('FLD_URL_TIP') ); ?></td>
+                  <td><input class="inputbox" type="text" name="url" size="30" maxlength="200" value="<?php echo $row->url ?>"></td>
+                </tr>
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_TARGET'), JText::_('FLD_TARGET_TIP') ); ?></td>
+                  <td><?php echo $lists['target'] ?></td>
+                </tr>
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_CAPTION'), JText::_('FLD_CAPTION_TIP') ); ?></td>
+                  <td><input class="inputbox" type="text" name="caption" size="30" maxlength="200" value="<?php echo $row->caption ?>"></td>
+                </tr>
+                <tr>
+                  <td nowrap valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_UPLOADFILE'), JText::_('FLD_UPLOADFILE_TIP') ); ?></td>
+                  <td>
+                    <input class="inputbox" type="file" name="advert_file" size="30" /><br/>
+                    <span><?php echo JText::_('FLD_UPLOADFILE_NOTE'); ?></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td nowrap valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DIMENSIONS'), JText::_('FLD_DIMENSIONS_TIP') ); ?></td>
+                  <td>
+                    <input class="inputbox" type="text" name="width" size="5" value="<?php echo $row->width ?>" onkeypress="dimCheck(this);" onchange="dimCheck(this);" /> x
+                    <input class="inputbox" type="text" name="height" size="5" value="<?php echo $row->height ?>" onkeypress="dimCheck(this);" onchange="dimCheck(this);" /><br/>
+                    <input type="checkbox" id="constrain" name="constrain" <?php echo $row->height && $row->width ? 'checked' : '' ?>> <label for="constrain"><?php echo JText::_('CHK_CONSTRAIN') ?></label>
+                  </td>
+                </tr>
+                <tr><th colspan="2"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_CODE'), JText::_('FLD_CODE_TIP') ); ?></th></tr>
+                <tr><td colspan="2"><textarea class="inputbox code" name="code"><?php echo $row->code ?></textarea></td></tr>
+              </table>
+            </fieldset>
+          </td>
+          <td valign="top" width="50%">
+            <fieldset class="adminForm">
+              <legend><?php echo JText::_('SET_ADVERTFILTERS') ?></legend>
+              <table class="adminTable" width="100%">
+                <tr>
+                  <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_WEEKDAYS'), JText::_('FLD_WEEKDAYS_TIP') ); ?></td>
+                  <td><?php echo $lists['weekdays']; ?></td>
+                </tr>
+                <tr>
+                  <td>
+                    <?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_TIMESTART'), JText::_('FLD_TIMESTART_TIP') ); ?> /
+                    <?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_TIMESTOP'), JText::_('FLD_TIMESTOP_TIP') ); ?>
+                    </td>
+                  <td>
+                    <?php echo $lists['time_start']; ?> /
+                    <?php echo $lists['time_stop']; ?>
+                    </td>
+                </tr>
+                <tr>
+                  <td valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_IDXMENU'), JText::_('FLD_IDXMENU_TIP') ); ?></td>
+                  <td><?php echo $lists['idx_menu']; ?></td>
+                </tr>
+                <tr>
+                  <td valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_IDXCATEGORY'), JText::_('FLD_IDXCATEGORY_TIP') ); ?></td>
+                  <td><?php echo $lists['idx_category']; ?></td>
+                </tr>
+                <tr>
+                  <td valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_IDXCONTENT'), JText::_('FLD_IDXCONTENT_TIP') ); ?></td>
+                  <td><textarea class="inputbox idx_content" name="idx_content"><?php echo $row->idx_content ?></textarea></td>
+                </tr>
+              </table>
+            </fieldset>
+          </td></tr>
+        </table>
+      </div>
       <input type="hidden" name="option" value="<?php echo $option ?>">
       <input type="hidden" name="id" value="<?php echo $row->id ?>">
       <input type="hidden" name="task" value="advert.apply">

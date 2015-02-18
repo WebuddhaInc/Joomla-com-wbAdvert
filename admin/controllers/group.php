@@ -269,78 +269,6 @@ function group_publish( $cid, $publish=1 ) {
 
 class HTML_wbAdvert_group {
 
-  function group_edit( &$row, &$lists, $option ){
-    JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES );
-    JHTML::_('behavior.tooltip');
-    ?>
-    <script language="javascript">
-    <!--
-    function submitbutton(pressbutton) {
-      var form = document.adminForm;
-      if (pressbutton == 'group.cancel') {
-        submitform( pressbutton );
-        return;
-      }
-      // do field validation
-      if (form.name.value == "") {
-        alert( "You must provide a banner name." );
-      } else {
-        submitform( pressbutton );
-      }
-    }
-    //-->
-    </script>
-    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=group.edit&id='.$row->id); ?>" method="post" name="adminForm" id="adminForm">
-      <table class="adminHeading" width="100%">
-        <tr><th class="icon-48-user">
-          <?php echo $row->id ? JText::sprintf('HEAD_GROUPEDIT',$row->name) : JText::_('HEAD_GROUPNEW');?><br/>
-          <font size="-1"><?php
-            if(is_object($row->_report)){
-              echo '<a href="index.php?option='.$option.'&task=advert&filter_group_id='.$row->id.'">'.JText::_('BTN_VIEWADVERTLIST').'</a> ';
-              foreach($row->_report AS $k => $v)
-                echo ' | <span>'.JText::_('FLD_'.strtoupper($k)).': '.(int)$v.'</span>';
-            }
-            ?></font>
-        </th></tr>
-      </table>
-      <div class="col100">
-        <fieldset class="adminForm">
-          <legend><?php echo JText::_( 'Details' ); ?></legend>
-          <table class="adminTable" width="100%">
-            <tbody>
-              <tr>
-                <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_GROUPNAME'), JText::_('FLD_GROUPNAME_TIP') ); ?></td>
-                <td><input class="inputbox" type="text" name="name" value="<?php echo $row->name ?>"></td>
-              </tr>
-              <tr>
-                <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DESCRIPTION'), JText::_('FLD_DESCRIPTION_TIP') ); ?></td>
-                <td><input class="inputbox" type="text" name="description" value="<?php echo $row->description ?>"></td>
-              </tr>
-              <tr>
-                <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_MODULEPOS'), JText::_('FLD_MODULEPOS_TIP') ); ?></td>
-                <td><?php echo $lists['module_id'] ?></td>
-              </tr>
-              <tr>
-                <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_SHOWCOUNT'), JText::_('FLD_SHOWCOUNT_TIP') ); ?></td>
-                <td><input class="inputbox" type="text" name="count" value="<?php echo $row->count ?>"></td>
-              </tr>
-              <tr>
-                <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DISPLAYORD'), JText::_('FLD_DISPLAYORD_TIP') ); ?></td>
-                <td><?php echo $lists['order'] ?></td>
-              </tr>
-            </tbody>
-          </table>
-        </fieldset>
-      </div>
-      <div class="clr"></div>
-      <input type="hidden" name="option" value="<?php echo $option; ?>">
-      <input type="hidden" name="task" value="group.apply">
-      <input type="hidden" name="id" value="<?php echo $row->id; ?>">
-      <?php echo JHTML::_( 'form.token' ); ?>
-    </form>
-    <?php
-  }
-
   function group_list( &$rows, &$pageNav, $option, &$lists ) {
     $my = jFactory::getUser();
 
@@ -471,4 +399,75 @@ class HTML_wbAdvert_group {
     <?php
   }
 
+  function group_edit( &$row, &$lists, $option ){
+    JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES );
+    JHTML::_('behavior.tooltip');
+    ?>
+    <script language="javascript">
+    <!--
+    function submitbutton(pressbutton) {
+      var form = document.adminForm;
+      if (pressbutton == 'group.cancel') {
+        submitform( pressbutton );
+        return;
+      }
+      // do field validation
+      if (form.name.value == "") {
+        alert( "You must provide a banner name." );
+      } else {
+        submitform( pressbutton );
+      }
+    }
+    //-->
+    </script>
+    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=group.edit&id='.$row->id); ?>" method="post" name="adminForm" id="adminForm">
+      <table class="adminHeading" width="100%">
+        <tr><th class="icon-48-user">
+          <?php echo $row->id ? JText::sprintf('HEAD_GROUPEDIT',$row->name) : JText::_('HEAD_GROUPNEW');?><br/>
+          <font size="-1"><?php
+            if(is_object($row->_report)){
+              echo '<a href="index.php?option='.$option.'&task=advert&filter_group_id='.$row->id.'">'.JText::_('BTN_VIEWADVERTLIST').'</a> ';
+              foreach($row->_report AS $k => $v)
+                echo ' | <span>'.JText::_('FLD_'.strtoupper($k)).': '.(int)$v.'</span>';
+            }
+            ?></font>
+        </th></tr>
+      </table>
+      <div class="col100">
+        <fieldset class="adminForm">
+          <legend><?php echo JText::_( 'Details' ); ?></legend>
+          <table class="adminTable" width="100%">
+            <tbody>
+              <tr>
+                <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_GROUPNAME'), JText::_('FLD_GROUPNAME_TIP') ); ?></td>
+                <td><input class="inputbox" type="text" name="name" value="<?php echo $row->name ?>"></td>
+              </tr>
+              <tr>
+                <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DESCRIPTION'), JText::_('FLD_DESCRIPTION_TIP') ); ?></td>
+                <td><input class="inputbox" type="text" name="description" value="<?php echo $row->description ?>"></td>
+              </tr>
+              <tr>
+                <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_MODULEPOS'), JText::_('FLD_MODULEPOS_TIP') ); ?></td>
+                <td><?php echo $lists['module_id'] ?></td>
+              </tr>
+              <tr>
+                <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_SHOWCOUNT'), JText::_('FLD_SHOWCOUNT_TIP') ); ?></td>
+                <td><input class="inputbox" type="text" name="count" value="<?php echo $row->count ?>"></td>
+              </tr>
+              <tr>
+                <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DISPLAYORD'), JText::_('FLD_DISPLAYORD_TIP') ); ?></td>
+                <td><?php echo $lists['order'] ?></td>
+              </tr>
+            </tbody>
+          </table>
+        </fieldset>
+      </div>
+      <div class="clr"></div>
+      <input type="hidden" name="option" value="<?php echo $option; ?>">
+      <input type="hidden" name="task" value="group.apply">
+      <input type="hidden" name="id" value="<?php echo $row->id; ?>">
+      <?php echo JHTML::_( 'form.token' ); ?>
+    </form>
+    <?php
+  }
 }

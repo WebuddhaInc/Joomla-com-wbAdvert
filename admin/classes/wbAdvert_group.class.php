@@ -41,8 +41,6 @@ class wbAdvert_group extends JTable {
 
   function __construct( &$_db ){
     parent::__construct( '#__wbadvert_group', 'id', $_db );
-    // $now =& JFactory::getDate();
-    // $this->set( 'date', $now->toMySQL() );
   }
 
   function check() {

@@ -114,6 +114,12 @@ class wbAdvert_Common {
     global $task, $option;
     $document =& JFactory::getDocument();
     $document->addStyleSheet("components/com_wbadvert/inc/admin.css",'text/css',"screen");
+    echo '<div id="com_wbadvert">';
+  }
+
+  // ------------------------------------------------------------------------ adminHeader
+  function adminFooter(){
+    echo '</div>';
   }
 
   // ------------------------------------------------------------------------ adminJumpMenu
