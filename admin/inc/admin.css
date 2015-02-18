@@ -45,6 +45,10 @@
   width: 35%;
   max-width: 45%;
 }
+#com_wbadvert .adminTable.report >tbody >tr >td:nth-child(1) {
+  width: 20%;
+  max-width: 45%;
+}
 #com_wbadvert .adminTable >tbody >tr >td >label {
   vertical-align: top;
   display: inline-block;

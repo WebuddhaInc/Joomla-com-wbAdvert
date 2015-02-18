@@ -906,14 +906,23 @@ class HTML_wbAdvert {
       <?php echo JHTML::_( 'form.token' ); ?>
     </form>
     <?php if( $row->id ){ ?>
-      <table class="adminform">
-        <tr><th><?php echo JText::_('SET_ADVERTSAMPLE'); ?> - <?php echo $row->file_type ?></th></tr>
-        <tr><td><?php echo $wbAdvert->getAdvertCode( $row->id ) ?></td></tr>
-        <?php if( !$row->code ){ ?>
-        <tr><th><?php echo JText::_('SET_ADVERTCODE'); ?></th></tr>
-        <tr><td><textarea class="inputbox" style="width:100%;height:100px;"><?php echo $wbAdvert->getAdvertCode( $row->id ) ?></textarea></td></tr>
-        <?php } ?>
+    <fieldset class="adminForm">
+      <legend><?php echo JText::_('SET_ADVERTMEDIA') ?></legend>
+      <table class="adminTable report" width="100%">
+        <tbody>
+          <tr>
+            <td><label><?php echo JText::_('SET_ADVERTSAMPLE'); ?> - <?php echo $row->file_type ?></label></td>
+            <td><?php echo $wbAdvert->getAdvertCode( $row->id ) ?></td>
+          </tr>
+          <?php if( !$row->code ){ ?>
+          <tr>
+            <td><label><?php echo JText::_('SET_ADVERTCODE'); ?></label></td>
+            <td><textarea class="inputbox" style="width:100%;height:100px;"><?php echo $wbAdvert->getAdvertCode( $row->id ) ?></textarea></td>
+          </tr>
+          <?php } ?>
+        </tbody>
       </table>
+    </fieldset>
     <?php } ?>
     <?php
   }
