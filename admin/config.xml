@@ -1,0 +1,65 @@
+<config>
+  <fieldset name="component" label="wbAdvert" description="">
+    <fields>
+      <field name="track_clicks" type="radio" class="btn-group" default="1" label="PN_TRACK_CLICKS" description="PD_TRACK_CLICKS">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+      <field name="load_frame" type="radio" class="btn-group" default="0" label="PN_LOAD_FRAMED" description="PD_LOAD_FRAMED">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+      <field name="delete_expired" type="radio" class="btn-group" default="0" label="PN_DELETE_EXPIRED" description="PD_DELETE_EXPIRED">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+      <field name="wrap_swf" type="radio" class="btn-group" default="0" label="PN_WRAP_SWF" description="PD_WRAP_SWF">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+      <field name="swf_clicktag" type="text" default="clickTAG" label="PN_SWF_CLICKTAG" description="PD_SWF_CLICKTAG" />
+      <field name="swf_base64ct" type="radio" class="btn-group" default="0" label="PN_SWF_BASE64CT" description="PD_SWF_BASE64CT">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+      <field name="swf_targetag" type="text" default="targetTAG" label="PN_SWF_TARGETAG" description="PD_SWF_TARGETAG" />
+      <field name="swf_jsloader" type="radio" class="btn-group" default="0" label="PN_SWF_JSLOADER" description="PD_SWF_JSLOADER">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+      <field name="swf_jsloaderpath" type="text" default="media/com_wbadvert/swfobject/" label="PN_SWF_JSLOADERPATH" description="PD_SWF_JSLOADERPATH" />
+      <field name="swf_objectag" type="radio" class="btn-group" default="0" label="PN_SWF_OBJECTAG" description="PD_SWF_OBJECTAG">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+      <field name="ad_path" type="text" default="media/com_wbadvert/adverts/" label="PN_AD_PATH" description="PD_AD_PATH" />
+      <field name="ad_force" type="radio" class="btn-group" default="1" label="PN_AD_FORCE" description="PD_AD_FORCE">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+    </fields>
+  </fieldset>
+  <fieldset name="module" label="Module Specific" description="">
+    <fields>
+      <field name="cat_strict" type="radio" class="btn-group" default="1" label="PN_CAT_STRICT" description="PD_CAT_STRICT">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+      <field name="show_alert" type="radio" class="btn-group" default="1" label="PN_SHOW_ALERT" description="PD_SHOW_ALERT">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+      <field name="wrap_module" type="radio" class="btn-group" default="1" label="PN_WRAP_MODULE" description="PD_WRAP_MODULE">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+      <field name="wrap_advert" type="radio" class="btn-group" default="1" label="PN_WRAP_ADVERT" description="PD_WRAP_ADVERT">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </field>
+    </fields>
+  </fieldset>
+  <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
+    <field name="rules" type="rules" component="com_wbadvert" filter="rules" validate="rules" label="JCONFIG_PERMISSIONS_LABEL" section="component" />
+  </fieldset>
+</config>

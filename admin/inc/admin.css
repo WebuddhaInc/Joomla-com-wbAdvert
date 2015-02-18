@@ -1,0 +1,24 @@
+h1.alert_msg {
+  font-size:18px;
+  margin:5px 0;
+  padding:5px;
+  color:#fff;
+  background:#ff0000;
+}
+.adminHeading tr th,
+.adminheading tr th {
+  height:48px;
+  vertical-align:top;
+  text-align:left;
+  font-size:18px;
+  padding:10px 0 0 54px;
+  width:100%;
+  background-position:0 0;
+  background-repeat:no-repeat;
+}
+.adminHeading th[class^="icon-"],
+.adminHeading th[class*=" icon-"] {
+}
+.adminHeading .icon-48-user {
+  background-image:url(img/icon_category.png);
+}
