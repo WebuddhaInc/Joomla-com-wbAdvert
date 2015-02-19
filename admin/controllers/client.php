@@ -250,11 +250,12 @@ class HTML_wbAdvert_client {
             $k = 0;
             for ($i=0, $n=count( $rows ); $i < $n; $i++) {
               $row = &$rows[$i];
-              $link = 'index.php?option=com_wbadvert&task=client.edit&hidemainmenu=1&id='. $row->id;
-              $task = $row->published ? 'client.unpublish' : 'client.publish';
-              $img  = $row->published ? 'publish_g.png' : 'publish_x.png';
-              $alt  = $row->published ? JText::_('Published') : JText::_('Unpublished');
-              $checked = JHTML::_('grid.checkedout', $row, $i );
+              $link     = 'index.php?option=com_wbadvert&task=client.edit&hidemainmenu=1&id='. $row->id;
+              $task     = $row->published ? 'client.unpublish' : 'client.publish';
+              $state    = $row->published ? 'publish' : 'unpublish';
+              $img      = $row->published ? 'publish_g.png' : 'publish_x.png';
+              $alt      = $row->published ? JText::_('Published') : JText::_('Unpublished');
+              $checked  = JHTML::_('grid.checkedout', $row, $i );
               ?>
               <tr class="<?php echo "row$k"; ?>">
                 <td width="1%"><?php echo $pageNav->getRowOffset( $i ); ?></td>
@@ -272,7 +273,11 @@ class HTML_wbAdvert_client {
                 <td><?php echo $row->total_banners ?></td>
                 <td><?php echo $row->total_impmade ?></td>
                 <td><?php echo $row->total_clicks ?></td>
-                <td><a href="javascript:void(0);" onClick="return listItemTask('cb<?php echo $i;?>','<?php echo $task;?>')"><img src="images/<?php echo $img;?>" width="12" height="12" border="0" alt="<?php echo $alt; ?>" /></a></td>
+                <td>
+                  <a class="btn btn-micro hasTooltip" title="" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $task;?>')" title="<?php echo $alt; ?>" href="javascript:void(0);">
+                    <i class="icon-<?php echo $state ?>"></i>
+                  </a>
+                </td>
               </tr>
               <?php
               $k = 1 - $k;
@@ -314,9 +319,9 @@ class HTML_wbAdvert_client {
     }
     //-->
     </script>
-    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=client.edit&id='.$row->id); ?>" method="post" name="adminForm" id="adminForm">
+    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=client.edit'); ?>" method="post" name="adminForm" id="adminForm">
       <table class="adminHeading" width="100%">
-        <tr><th class="icon-48-user">
+        <tr><th class="icon-48-client">
           <?php echo $row->id ? JText::sprintf('HEAD_CLIENTEDIT',$row->name) : JText::_('HEAD_CLIENTNEW');?><br/>
           <font size="-1"><?php
             if(is_object($row->_report)){

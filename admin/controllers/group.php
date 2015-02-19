@@ -62,8 +62,8 @@ function group_list( $option, $task ){
   // Load Records
     if( in_array($filters['order'],array('m.title')) )
       $ordering = 'm.title '.$filters['order_Dir'].', g.ordering, g.name';
-    else if( in_array($filters['order'],array('a.ordering')) )
-      $ordering = 'm.title, g.ordering '.$filters['order_Dir'].', g.name';
+    else if( in_array($filters['order'],array('g.ordering')) )
+      $ordering = 'm.title '.$filters['order_Dir'].', g.ordering '.$filters['order_Dir'].', g.name '.$filters['order_Dir'].'';
     else
       $ordering = $filters['order'].' '.$filters['order_Dir'];
     $db->setQuery("
@@ -229,8 +229,9 @@ function group_order( $cid, $inc, $option ) {
         $row->store();
         $modules[$row->module_id]=0;
       }
-      foreach($modules AS $key => $val)
+      foreach($modules AS $key => $val){
         $row->reorder("module_id = ".(int)$key);
+      }
     }
   } else {
     $row->load( (int)$cid );
@@ -281,7 +282,7 @@ class HTML_wbAdvert_group {
     JHtml::_('formbehavior.chosen', 'select');
 
     if ($saveOrder){
-      $saveOrderingUrl = 'index.php?option=com_wbadvert&task=group.saveOrderAjax&tmpl=component';
+      $saveOrderingUrl = 'index.php?option=com_wbadvert&task=group.order&tmpl=component';
       JHtml::_('sortablelist.sortable', 'wbadvertList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
     }
 
@@ -330,15 +331,16 @@ class HTML_wbAdvert_group {
           $k = 0;
           for ($i=0, $n=count( $rows ); $i < $n; $i++) {
             $row = &$rows[$i];
-            $row->id = $row->id;
-            $link = 'index.php?option=com_wbadvert&task=group.edit&hidemainmenu=1&id='. $row->id;
-            $task = $row->published ? 'group.unpublish' : 'group.publish';
-            $img  = $row->published ? 'publish_g.png' : 'publish_x.png';
-            $alt  = $row->published ? 'Published' : 'Unpublished';
-            $checked = JHTML::_('grid.checkedout', $row, $i );
-            $modLink = 'index.php?option=com_modules&client=0&task=edit&cid[]='.$row->module_id;
+            $row->id  = $row->id;
+            $link     = 'index.php?option=com_wbadvert&task=group.edit&hidemainmenu=1&id='. $row->id;
+            $task     = $row->published ? 'group.unpublish' : 'group.publish';
+            $state    = $row->published ? 'publish' : 'unpublish';
+            $img      = $row->published ? 'publish_g.png' : 'publish_x.png';
+            $alt      = $row->published ? 'Published' : 'Unpublished';
+            $checked  = JHTML::_('grid.checkedout', $row, $i );
+            $modLink  = 'index.php?option=com_modules&client=0&task=edit&cid[]='.$row->module_id;
             ?>
-            <tr class="<?php echo "row$k"; ?>" sortable-group-id="<?php echo $row->id; ?>">
+            <tr class="<?php echo "row$k"; ?>" sortable-group-id="<?php echo (int)$row->module_id ?>">
               <td class="order nowrap center hidden-phone">
                 <?php
                   if( $canDo->get('core.edit.state') ){
@@ -352,7 +354,7 @@ class HTML_wbAdvert_group {
                     <span class="sortable-handler hasTooltip <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
                       <i class="icon-menu"></i>
                     </span>
-                    <input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering;?>" class="width-20 text-area-order " />
+                    <input type="text" style="display:none" name="order[]" size="5" value="<?php echo $row->ordering;?>" class="width-20 text-area-order " />
                     <?php
                   } else {
                     ?>
@@ -378,7 +380,11 @@ class HTML_wbAdvert_group {
               <td><?php echo $row->count ?></td>
               <td><?php echo $row->num_adverts ?></td>
               <td><?php echo ucwords($row->order) ?></td>
-              <td><a href="javascript: void(0);" onClick="return listItemTask('cb<?php echo $i;?>','<?php echo $task;?>')"><img src="images/<?php echo $img;?>" width="12" height="12" border="0" alt="<?php echo $alt; ?>" /></a></td>
+              <td>
+                <a class="btn btn-micro hasTooltip" title="" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $task;?>')" title="<?php echo $alt; ?>" href="javascript:void(0);">
+                  <i class="icon-<?php echo $state ?>"></i>
+                </a>
+              </td>
               <td><?php echo $row->id ?></td>
             </tr>
             <?php
@@ -420,9 +426,9 @@ class HTML_wbAdvert_group {
     }
     //-->
     </script>
-    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=group.edit&id='.$row->id); ?>" method="post" name="adminForm" id="adminForm">
+    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=group.edit'); ?>" method="post" name="adminForm" id="adminForm">
       <table class="adminHeading" width="100%">
-        <tr><th class="icon-48-user">
+        <tr><th class="icon-48-group">
           <?php echo $row->id ? JText::sprintf('HEAD_GROUPEDIT',$row->name) : JText::_('HEAD_GROUPNEW');?><br/>
           <font size="-1"><?php
             if(is_object($row->_report)){

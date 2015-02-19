@@ -43,6 +43,7 @@ function config_save( $option ) {
 
   $errors = array();
   $params = JRequest::getVar( 'params', Array(), 'method', 'array' );
+  inspect( $_REQUEST );
   if(count($params)) {
     $txt = array();
 
@@ -127,7 +128,7 @@ class HTML_wbAdvert_config {
     JHTML::_('behavior.tooltip');
 
     ?>
-    <form action="index.php" method="post" name="adminForm">
+    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=config.edit'); ?>" method="post" name="adminForm" id="adminForm" class="form-horizontal">
       <?php
         if( !$wbAdvert_config->ready() )
           $app->enqueueMessage( 'You Must Save the Configuration before Continuing to use wbAdvert', 'error' );
@@ -140,58 +141,64 @@ class HTML_wbAdvert_config {
       <table width="100%">
         <tr height="300">
           <td width="30%" valign="top">
-            <table width="100%" class="adminform">
-              <tr><th><?php echo WBADVERT_TITLE.' '.JText::_('LBL_CONFIG'); ?></th></tr>
-              <tr><td><?php echo $params->render() ?></td></tr>
-              <tr><th><?php echo WBADVERT_TITLE.' '.JText::_('LBL_MODINSTALLED'); ?></th></tr>
-              <tr><td>
-                <table width="100%" cellpadding="2" cellspacing="0" class="adminlist">
-                  <tr>
-                    <th><?php echo JText::_('TH_MODNME') ?></th>
-                    <th><?php echo JText::_('TH_MODPOS') ?></th>
-                    <th><?php echo JText::_('TH_MODORD') ?></th>
-                    <th><?php echo JText::_('TH_MODPUB') ?></th>
-                  </tr>
-                <?php
-                  $db->setQuery("
-                    SELECT *
-                    FROM #__modules
-                    WHERE `module` LIKE 'mod_wbadvert%'
-                    ORDER BY position, ordering
-                    ");
-                  $modList = $db->loadObjectList();
-                  if( !count( $modList ) ){
-                    $errMsg = JText::_('ERR_MODREQUIRED');
-                    $app->enqueueMessage( $errMsg, 'error' );
-                    echo '<tr bgcolor="#FF0000"><td colspan="4"><h1 class="alert_msg" style="text-align:center;">' . $errMsg . '</h1></td></tr>';
-                  } else {
-                    foreach($modList AS $mod){
-                      $link = 'index.php?option=com_modules&view=module&layout=edit&id='.$mod->id;
-                      echo '<tr '.($mod->published?'':'class="inactive"').'>';
-                      echo '<td><a href="'.$link.'" target="_blank">'.$mod->title.'</a></td>';
-                      echo '<td>'.$mod->position.'</td>';
-                      echo '<td>'.$mod->ordering.'</td>';
-                      echo '<td>'.($mod->published?'Yes':'No').'</td>';
-                      echo '</tr>';
+            <fieldset class="adminForm">
+              <legend><?php echo WBADVERT_TITLE.' '.JText::_('LBL_CONFIG'); ?></legend>
+              <?php echo $params->render() ?>
+            </fieldset>
+            <fieldset class="adminForm">
+              <legend><?php echo WBADVERT_TITLE.' '.JText::_('LBL_MODINSTALLED'); ?></legend>
+              <table width="100%" class="adminform">
+                <tr><td>
+                  <table width="100%" cellpadding="2" cellspacing="0" class="adminList table table-striped">
+                    <tr>
+                      <th><?php echo JText::_('TH_MODNME') ?></th>
+                      <th><?php echo JText::_('TH_MODPOS') ?></th>
+                      <th><?php echo JText::_('TH_MODORD') ?></th>
+                      <th><?php echo JText::_('TH_MODPUB') ?></th>
+                    </tr>
+                  <?php
+                    $db->setQuery("
+                      SELECT *
+                      FROM #__modules
+                      WHERE `module` LIKE 'mod_wbadvert%'
+                      ORDER BY position, ordering
+                      ");
+                    $modList = $db->loadObjectList();
+                    if( !count( $modList ) ){
+                      $errMsg = JText::_('ERR_MODREQUIRED');
+                      $app->enqueueMessage( $errMsg, 'error' );
+                      echo '<tr bgcolor="#FF0000"><td colspan="4"><h1 class="alert_msg" style="text-align:center;">' . $errMsg . '</h1></td></tr>';
+                    } else {
+                      foreach($modList AS $mod){
+                        $link = 'index.php?option=com_modules&view=module&layout=edit&id='.$mod->id;
+                        echo '<tr '.($mod->published?'':'class="inactive"').'>';
+                        echo '<td><a href="'.$link.'" target="_blank">'.$mod->title.'</a></td>';
+                        echo '<td>'.$mod->position.'</td>';
+                        echo '<td>'.$mod->ordering.'</td>';
+                        echo '<td>'.($mod->published?'Yes':'No').'</td>';
+                        echo '</tr>';
+                      }
                     }
-                  }
-                ?>
-                </table>
-              </td></tr>
-            </table>
+                  ?>
+                  </table>
+                </td></tr>
+              </table>
+            </fieldset>
           </td>
           <td valign="top" height="100%">
-            <table width="100%" height="100%" class="adminform">
-              <tr height="1%">
-                <th><?php
-                  echo JText::_('LBL_FRAMEDTMPL');
-                  echo ': <i>' . $wbAdvert_config->getFramePath(false) . '</i>';
-                  ?></th>
-              </tr>
-              <tr><td valign="top" colspan="2">
-                <textarea style="width: 100%;height:500px" name="framed_template"><?php echo $config->framed_template ?></textarea>
-              </td></tr>
-            </table>
+            <fieldset class="adminForm">
+              <legend><?php
+                    echo JText::_('LBL_FRAMEDTMPL');
+                    echo ': <i>' . $wbAdvert_config->getFramePath(false) . '</i>';
+                    ?></legend>
+              <table width="100%" height="100%" class="adminForm">
+                <tr><td valign="top" colspan="2">
+                  <textarea style="width: 100%;height:100%;min-height:500px" name="framed_template"><?php
+                    echo $config->framed_template;
+                  ?></textarea>
+                </td></tr>
+              </table>
+            </fieldset>
           </td>
         </tr>
       </table>

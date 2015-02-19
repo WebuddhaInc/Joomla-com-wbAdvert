@@ -21,8 +21,22 @@
 #com_wbadvert .adminHeading th[class^="icon-"],
 #com_wbadvert .adminHeading th[class*=" icon-"] {
 }
-#com_wbadvert .adminHeading .icon-48-user {
+#com_wbadvert .adminHeading .icon-48-advert,
+#com_wbadvert .adminHeading .icon-48-group,
+#com_wbadvert .adminHeading .icon-48-client {
   background-image:url(img/icon_category.png);
+}
+
+#com_wbadvert .adminList tr th {
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+#com_wbadvert .adminList tr th a {
+  display: inline-block;
+  float: none;
+}
+#com_wbadvert .adminList tr td >input[name^=order] {
+  width: 30px;
 }
 
 #com_wbadvert .adminTable tr td >input[type=radio],

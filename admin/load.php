@@ -42,11 +42,14 @@ defined( '_JEXEC' ) or die('Access Denied');
 // Administration Access
   if( defined('WBADVERT_ADMIN') ){
     $user =& JFactory::getUser();
-    if( !JFactory::getUser()->authorise('core.manage', 'com_banners') ){
+    if( !JFactory::getUser()->authorise('core.manage', WBADVERT_NAME) ){
       $app = JFactory::getApplication();
       $app->redirect( 'index.php', JText::_('JERROR_ALERTNOAUTHOR'), 'error' );
     }
   }
+
+// Load Compatability
+  require_once( WBADVERT_PATH.'helpers/compat.php' );
 
 // Load Configuration
   global $wbAdvert_config;
@@ -67,7 +70,7 @@ defined( '_JEXEC' ) or die('Access Denied');
 // Load Includes
   if( defined('WBADVERT_ADMIN') ){
     require_once( WBADVERT_PATH.'helpers/common.php' );
-    require_once( WBADVERT_PATH.'/helpers/toolbar.php' );
+    require_once( WBADVERT_PATH.'helpers/toolbar.php' );
     require_once( WBADVERT_PATH.'controllers/advert.php' );
     require_once( WBADVERT_PATH.'controllers/campaign.php' );
     require_once( WBADVERT_PATH.'controllers/client.php' );
@@ -75,7 +78,8 @@ defined( '_JEXEC' ) or die('Access Denied');
     require_once( WBADVERT_PATH.'controllers/keyword.php' );
     require_once( WBADVERT_PATH.'controllers/config.php' );
     require_once( WBADVERT_PATH.'controllers/home.php' );
-  } else {
+  }
+  else {
   }
 
 // Load SWF JS Loader

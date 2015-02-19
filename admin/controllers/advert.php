@@ -87,9 +87,9 @@ function advert_list( $option, $task ) {
 
   // Load Records
     if( in_array($filters['order'],array('g.name')) )
-      $ordering = 'g.name '.$filters['order_Dir'].', idx_group.ordering, a.name';
+      $ordering = 'g.name '.$filters['order_Dir'].', idx_group.ordering '.$filters['order_Dir'].', a.name '.$filters['order_Dir'].'';
     else if( in_array($filters['order'],array('idx_group.ordering')) )
-      $ordering = 'g.name, idx_group.ordering '.$filters['order_Dir'].', a.name';
+      $ordering = 'g.name '.$filters['order_Dir'].', idx_group.ordering '.$filters['order_Dir'].', a.name '.$filters['order_Dir'].'';
     else
       $ordering = $filters['order'].' '.$filters['order_Dir'];
     $db->setQuery( "
@@ -213,19 +213,34 @@ function advert_edit( $id, $option ) {
     $client_list = array_merge( $client_list, $db->loadObjectList() );
     $lists['client_id'] = JHTML::_('select.genericlist', $client_list, 'client_id', 'class="inputbox" size="1"','value', 'text', $row->client_id);
 
+  // Query Groups
+    $idx_groups = array();
+    $db->setQuery("SELECT `group_id` FROM `#__wbadvert_idx_group` WHERE `advert_id` = '$row->id'");
+    $tmpRows = $db->loadObjectList(); echo $db->getErrorMsg();
+    if( $tmpRows ){
+      foreach( $tmpRows AS $tmpResult ){
+        $idx_groups[] = $tmpResult->group_id;
+      }
+    }
+
   // Build Group Select List
     $db->setQuery("SELECT id AS value, name AS text FROM `#__wbadvert_group` ORDER BY module_id, ordering, name");
     if(!$db->query()){echo $db->stderr();return;};
-    // $group_list = Array( JHTML::_('select.option', '0', JText::_('LIST_GROUPSELECT') ) );
-    // $group_list = array_merge( $group_list, $db->loadObjectList() );
     $group_list = $db->loadObjectList();
-    $db->setQuery("SELECT `group_id` FROM `#__wbadvert_idx_group` WHERE `advert_id` = '$row->id'");
-    $idx_groups = $db->loadResultArray(); echo $db->getErrorMsg();
     $lists['idx_group'] = JHTML::_('select.genericlist', $group_list, 'idx_group[]', 'class="inputbox idx_group" multiple="true"','value', 'text', $idx_groups);
 
+  // Query Categories
+    $idx_categories = array();
+    $db->setQuery("SELECT `category_id` FROM `#__wbadvert_idx_category` WHERE `advert_id` = '$row->id'");
+    $tmpRows = $db->loadObjectList(); echo $db->getErrorMsg();
+    if( $tmpRows ){
+      foreach( $tmpRows AS $tmpResult ){
+        $idx_categories[] = $tmpResult->category_id;
+      }
+    }
+    if(!count($idx_categories)) $idx_categories = array('0');
+
   // Build Category Select List
-    $db->setQuery("SELECT category_id FROM `#__wbadvert_idx_category` WHERE `advert_id` = '$row->id'");
-    $idx_categories = $db->loadResultArray(); echo $db->getErrorMsg(); if(!count($idx_categories)) $idx_categories = array('0');
     $db->setQuery("
       SELECT c.id, c.title, c.parent_id, c.level
       FROM #__categories AS c
@@ -241,9 +256,18 @@ function advert_edit( $id, $option ) {
     }
     $lists['idx_category'] = JHTML::_('select.genericlist', $category_list, 'idx_category[]', 'class="inputbox idx_category" multiple="true"','value', 'text', $idx_categories);
 
+  // Query Menus
+    $idx_menus = array();
+    $db->setQuery("SELECT `menu_id` FROM `#__wbadvert_idx_menu` WHERE `advert_id` = '$row->id'");
+    $tmpRows = $db->loadObjectList(); echo $db->getErrorMsg();
+    if( $tmpRows ){
+      foreach( $tmpRows AS $tmpResult ){
+        $idx_menus[] = $tmpResult->menu_id;
+      }
+    }
+    if(!count($idx_menus)) $idx_menus = array('0');
+
   // Build Menu Select List
-    $db->setQuery("SELECT menu_id FROM `#__wbadvert_idx_menu` WHERE `advert_id` = '$row->id'");
-    $idx_menus = $db->loadResultArray(); echo $db->getErrorMsg(); if(!count($idx_menus)) $idx_menus = array('0');
     $db->setQuery("SELECT * FROM #__menu WHERE `published` = '1' AND `menutype` != '' ORDER BY `menutype`, `title`");
     $menus = $db->loadObjectList(); echo $db->getErrorMsg();
     $menu_list = array( JHTML::_('select.option', '0', JText::_('LIST_ALLMENUS')) );
@@ -495,19 +519,22 @@ function advert_order( $cid, $inc, $option ) {
   $row = new wbAdvert_advert( $db );
   $idx_row = new wbAdvert_idx_group( $db );
   $group_id = JRequest::getInt('filter_group_id',0);
+  $campaign_id = JRequest::getInt('filter_campaign_id',0);
   if( $group_id ){
     $order = JRequest::getVar( 'order', array(), 'method', 'array' );
     if( is_array($cid) ){
       $groups = array();
       if( count($order) && count($order) == count($cid) ){
-        for($i=0;$i<count($cid);$i++)
-          $idx_row->save( $cid[$i], $group_id, $order[$i] );
-        $row->reorder( $group_id );
+        for($i=0;$i<count($cid);$i++){
+          $idx_row->save( $cid[$i], $campaign_id, $group_id, $order[$i] );
+        }
       }
-    } else {
-      $row->load( $cid );
-      $row->move( $inc, $group_id );
     }
+    else {
+      $idx_row->loadRow( $cid, $campaign_id, $group_id );
+      $idx_row->moveRow( $inc );
+    }
+    $idx_row->reorderRows( $campaign_id, $group_id );
   }
   $app->redirect( 'index.php?option='.WBADVERT_NAME.'&task=advert', JText::sprintf('MSG_UPDATED', JText::_('Advertisement')) );
 }
@@ -545,9 +572,35 @@ class HTML_wbAdvert {
   function advert_list( &$rows, &$pageNav, $option, &$lists, &$filters ) {
     $my = jFactory::getUser();
     $db =& JFactory::getDBO();
+
+    $canDo = wbAdvert_Common::userGetPermissions();
+    $saveOrder = $filters['group_id'] && $lists['order'] == 'idx_group.ordering';
+
+    JHtml::_('bootstrap.tooltip');
+    JHtml::_('behavior.multiselect');
+    JHtml::_('formbehavior.chosen', 'select');
+
+    if ($saveOrder){
+      $saveOrderingUrl = 'index.php?option=com_wbadvert&task=advert.order&tmpl=component';
+      JHtml::_('sortablelist.sortable', 'wbadvertList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+    }
+
     JHTML::_('behavior.tooltip');
     $ordering = ($lists['order'] == 'g.name' || $lists['order'] == 'idx_group.ordering');
     ?>
+    <script type="text/javascript">
+      Joomla.orderTable = function(){
+        table = document.getElementById("sortTable");
+        direction = document.getElementById("directionTable");
+        order = table.options[table.selectedIndex].value;
+        if (order != '<?php echo $lists['order']; ?>'){
+          dirn = 'asc';
+        } else {
+          dirn = direction.options[direction.selectedIndex].value;
+        }
+        Joomla.tableOrdering(order, dirn, '');
+      }
+    </script>
     <script language="javascript"><!--
       function submitResetFilters(){
         $('filter_search').value='';
@@ -600,7 +653,12 @@ class HTML_wbAdvert {
       <table class="adminList table table-striped" id="wbadvertList">
         <thead>
           <tr>
-            <th nowrap><?php echo JText::_('Num') ?></th>
+            <?php if($filters['group_id']){ ?>
+            <th width="1%" class="nowrap center hidden-phone">
+              <?php echo JHTML::_('grid.sort', '<i class="icon-menu-2"></i>', 'idx_group.ordering', @$lists['order_Dir'], @$lists['order'], 'advert', 'asc', 'JGRID_HEADING_ORDERING' ); ?>
+            </th>
+            <?php } ?>
+            <th nowrap><?php echo JText::_('#') ?></th>
             <th width="1%"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count( $rows ); ?>);" /></th>
             <th nowrap><?php echo JHTML::_('grid.sort', 'TH_ADVERTNAME', 'a.name', @$lists['order_Dir'], @$lists['order'] ); ?></th>
             <th nowrap><?php echo JHTML::_('grid.sort', 'TH_CLIENTNAME', 'c.name', @$lists['order_Dir'], @$lists['order'] ); ?></th>
@@ -611,10 +669,10 @@ class HTML_wbAdvert {
             <th nowrap><?php echo JHTML::_('grid.sort', 'TH_ADVERTIMPRESSIONS', 'a.impmade', @$lists['order_Dir'], @$lists['order'] ); ?></th>
             <th nowrap><?php echo JHTML::_('grid.sort', 'TH_ADVERTCLICKS', 'a.clicks', @$lists['order_Dir'], @$lists['order'] ); ?></th>
             <th nowrap><?php echo JHTML::_('grid.sort', 'TH_ADVERTCLICKRATIO', 'percent_clicks', @$lists['order_Dir'], @$lists['order'] ); ?></th>
-            <?php if($filters['group_id']){ ?>
+            <?php /* if($filters['group_id']){ ?>
             <th nowrap><?php echo JHTML::_('grid.sort', 'Order', 'idx_group.ordering', @$lists['order_Dir'], @$lists['order'] ); ?>
               <?php if($ordering) echo JHTML::_('grid.order',  $rows, 'filesave.png', 'advert.order' ); ?></th>
-            <?php } ?>
+            <?php } */ ?>
             <th nowrap><?php echo JHTML::_('grid.sort', 'Published', 'a.published', @$lists['order_Dir'], @$lists['order'] ); ?></th>
             <th nowrap><?php echo JText::_('TH_ADVERTFILTERS') ?> <?php echo $lists['showall'] ?></th>
             <th nowrap><?php echo JHTML::_('grid.sort', 'ID', 'a.id', @$lists['order_Dir'], @$lists['order'] ); ?></th>
@@ -643,7 +701,33 @@ class HTML_wbAdvert {
               $nullDate = $db->getNullDate();
               $checked  = JHTML::_('grid.checkedout', $row, $i );
               ?>
-              <tr class="<?php echo "row$k"; ?>">
+              <tr class="<?php echo "row$k"; ?>" sortable-group-id="<?php echo (int)$filters['group_id'] ?>">
+                <?php if($filters['group_id']){ ?>
+                  <td class="order nowrap center hidden-phone">
+                    <?php
+                      if( $canDo->get('core.edit.state') ){
+                        $disableClassName = '';
+                        $disabledLabel    = '';
+                        if( !$saveOrder ){
+                          $disabledLabel    = JText::_('JORDERINGDISABLED');
+                          $disableClassName = 'inactive tip-top';
+                        }
+                        ?>
+                        <span class="sortable-handler hasTooltip <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
+                          <i class="icon-menu"></i>
+                        </span>
+                        <input type="text" style="display:none" name="order[]" size="5" value="<?php echo $row->ordering;?>" class="width-20 text-area-order " />
+                        <?php
+                      } else {
+                        ?>
+                        <span class="sortable-handler inactive" >
+                          <i class="icon-menu"></i>
+                        </span>
+                        <?php
+                      }
+                    ?>
+                  </td>
+                <?php } ?>
                 <td><?php echo $pageNav->getRowOffset( $i ); ?></td>
                 <td><?php echo $checked; ?></td>
                 <td align="left"><?php
@@ -658,8 +742,9 @@ class HTML_wbAdvert {
                   if( strlen($row->idx_groups) ){
                     $idx_groups = explode(',',$row->idx_groups);
                     foreach($lists['group_rows'] AS $group_row){
-                      if(in_array( $group_row->id, $idx_groups ))
+                      if(in_array( $group_row->id, $idx_groups )){
                         $idx_group_links[] = '<a href="index.php?option='.$option.'&task=group.edit&hidemainmenu=1&id='.$group_row->id.'" title="'.JText::sprintf('BTN_EDIT',JText::_('Group')).'">'.$group_row->name .'</a>';
+                      }
                     }
                     echo implode(', ',$idx_group_links);
                   } else
@@ -671,16 +756,18 @@ class HTML_wbAdvert {
                 <td><?php echo $row->impmade .' of '. ($row->imptotal ? $row->imptotal : 'unlimited') ?></td>
                 <td><?php echo $row->clicks ?></td>
                 <td><?php echo $row->percent_clicks ?></td>
-                <?php if($filters['group_id']){ ?>
+                <?php /* if($filters['group_id']){ ?>
                 <td class="order">
                   <span><?php echo $pageNav->orderUpIcon( $i, ($row->group_id == @$rows[$i-1]->group_id), 'advert.orderup', $ordering ); ?></span>
                   <span><?php echo $pageNav->orderDownIcon( $i, $n, ($row->group_id == @$rows[$i+1]->group_id), 'advert.orderdn', $ordering ); ?></span>
                   <input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $ordering ? '' : 'disabled="disabled'; ?> class="text_area" style="text-align: center" />
                 </td>
-                <?php } ?>
-                <td><a class="jgrid" href="javascript: void(0);" onClick="return listItemTask('cb<?php echo $i;?>','<?php echo $task;?>')" title="<?php echo $alt; ?>">
-                  <span class="state <?php echo $state ?>"><span class="text"><?php echo $alt ?></span>
-                  </a></td>
+                <?php } */ ?>
+                <td>
+                  <a class="btn btn-micro hasTooltip" title="" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $task;?>')" title="<?php echo $alt; ?>" href="javascript:void(0);">
+                    <i class="icon-<?php echo $state ?>"></i>
+                  </a>
+                </td>
                 <td><?php
                   if( $row->filters == 'na' )
                     echo '-';
@@ -777,9 +864,9 @@ class HTML_wbAdvert {
       .adminform textarea.idx_content { width:400px;height:80px; }
       .adminform textarea.code { width:360px;height:140px; }
     //--></style>
-    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=group.edit&id='.$row->id); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+    <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=advert.edit'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
       <table class="adminHeading" width="100%">
-        <tr><th class="icon-48-mediamanager">
+        <tr><th class="icon-48-advert">
           <?php echo $row->id ? JText::sprintf('HEAD_ADVERTEDIT',$row->name) : JText::_('HEAD_ADVERTNEW');?><br/>
           <font size="-1"><?php echo ($row->id ? JText::_('LBL_ADVERTLINK').': <a href="'.JURI::root().'index.php?option='.$option.'&task=load&id='.$row->id.'" target="_blank">index.php?option='.$option.'&task=load&id='.$row->id.'</a>' : '&nbsp;') ?></font>
         </th></tr>

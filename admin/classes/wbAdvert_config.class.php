@@ -27,6 +27,7 @@ defined( '_JEXEC' ) or die('Access Denied');
 
 // Required Assets
 jimport('joomla.html.parameter');
+jimport('joomla.application.component.helper');
 
 // ------------------------------------------------------------------------------------------------------ wbAdvert_config
 class wbAdvert_config {
@@ -84,7 +85,10 @@ class wbAdvert_config {
   }
 
   function storeExtension(){
+    inspect( $this->_extension );
+    inspect( $this->_params );
     $this->_extension->params = $this->_params->toString();
+    inspect( $this->_extension );die();
     return $this->_extension->store();
   }
 
@@ -93,6 +97,25 @@ class wbAdvert_config {
   }
 
   function render(){
+    $config = JComponentHelper::getParams(WBADVERT_NAME);
+    $form = new JForm( 'jform' );
+    $form->loadFile( WBADVERT_PATH.'config.xml', false, '//config' );
+    $form->bind( $config->toArray() );
+    $fieldSets = $form->getFieldsets();
+    $html[] = '<div class="control-fieldset">';
+    foreach( $form->getFieldset('component') as $field ){
+      echo $field->renderField(array(
+        'name' => 'jform[123]'
+        ));
+      inspect( $field, get_class_methods($field) );die();
+      $html[] = '<div class="control-group">';
+        $html[] = '<div class="control-label"><label>'. $field->label . '</label></div>';
+        $html[] = '<div class="controls">'. $field->input . '</div>';
+      $html[] = '</div>';
+    }
+    $html[] = '</div>';
+    return implode(PHP_EOL, $html);
+    /*
     $params = $this->_params->getParams();
     $html[] = '<table>';
     foreach($params AS $param){
@@ -103,6 +126,7 @@ class wbAdvert_config {
     }
     $html[] = '</table>';
     return implode(PHP_EOL, $html);
+    */
   }
 
   function set( $name, $val ){
