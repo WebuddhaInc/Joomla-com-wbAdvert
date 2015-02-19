@@ -8,7 +8,7 @@
   <creationDate>2015-02-15</creationDate>
   <copyright>(c)2007-2015 Webuddha.com, Holodyn Corporation</copyright>
   <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-  <version>3.0.0</version>
+  <version>3.0.1</version>
   <description>wbAdvert Advanced Advertisement and Banner Management System.</description>
 
   <installfile>install.wbadvert.php</installfile>
@@ -55,10 +55,12 @@
     <submenu>
       <menu img="class:default" task="home">COM_WBADVERT_MENU_HOME</menu>
       <menu img="class:media" task="advert">COM_WBADVERT_MENU_ADVERT</menu>
-      <menu img="class:levels" task="campaign">COM_WBADVERT_MENU_CAMPAIGN</menu>
-      <menu img="class:maintenance" task="keyword">COM_WBADVERT_MENU_KEYWORD</menu>
       <menu img="class:category" task="group">COM_WBADVERT_MENU_GROUP</menu>
       <menu img="class:user" task="client">COM_WBADVERT_MENU_CLIENT</menu>
+      <!--
+      <menu img="class:levels" task="campaign">COM_WBADVERT_MENU_CAMPAIGN</menu>
+      <menu img="class:maintenance" task="keyword">COM_WBADVERT_MENU_KEYWORD</menu>
+      -->
       <menu img="class:config" task="config">COM_WBADVERT_MENU_CONFIG</menu>
       <menu img="class:help" task="support">COM_WBADVERT_MENU_SUPPORT</menu>
     </submenu>

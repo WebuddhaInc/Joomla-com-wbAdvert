@@ -35,18 +35,19 @@ class wbAdvert_ToolbarHelper {
     JSubMenuHelper::addEntry(
       JText::_('COM_WBADVERT_MENU_ADVERT'),
       'index.php?option=com_wbadvert&task=advert',
-      in_array($task,array('advert'))
+      in_array($task,array('advert', 'advert.edit'))
     );
     JSubMenuHelper::addEntry(
       JText::_('COM_WBADVERT_MENU_GROUP'),
       'index.php?option=com_wbadvert&task=group',
-      in_array($task,array('group'))
+      in_array($task,array('group', 'group.edit'))
     );
     JSubMenuHelper::addEntry(
       JText::_('COM_WBADVERT_MENU_CLIENT'),
       'index.php?option=com_wbadvert&task=client',
-      in_array($task,array('client'))
+      in_array($task,array('client', 'client.edit'))
     );
+    /*
     JSubMenuHelper::addEntry(
       JText::_('COM_WBADVERT_MENU_CAMPAIGN'),
       'index.php?option=com_wbadvert&task=campaign',
@@ -57,6 +58,7 @@ class wbAdvert_ToolbarHelper {
       'index.php?option=com_wbadvert&task=keyword',
       in_array($task,array('keyword'))
     );
+    */
     JSubMenuHelper::addEntry(
       JText::_('COM_WBADVERT_MENU_CONFIG'),
       'index.php?option=com_wbadvert&task=config',
