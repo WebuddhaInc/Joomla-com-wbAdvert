@@ -29,6 +29,7 @@ defined( '_JEXEC' ) or die('Access Denied');
   define('WBADVERT_TITLE', 'wbAdvert');
   define('WBADVERT_NAME', 'com_wbadvert');
   define('WBADVERT_SITE', JURI::root());
+  define('WBADVERT_SITE_LOCAL', JURI::root(true).'/');
   define('WBADVERT_BASE', JPATH_ROOT);
   define('WBADVERT_PATH', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.WBADVERT_NAME.DS);
   define('WBADVERT_PATH_PUBLIC', JPATH_ROOT.DS.'components'.DS.WBADVERT_NAME.DS);

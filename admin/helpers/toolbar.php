@@ -117,11 +117,9 @@ class wbAdvert_ToolbarHelper {
     JToolBarHelper::publishList( 'group.publish' );
     JToolBarHelper::unpublishList( 'group.unpublish' );
     JToolBarHelper::deleteList(JText::_('VALIDDELETEITEMS'),'group.delete');
-
     $canDo = wbAdvert_Common::userGetPermissions();
     if( $canDo->get('core.admin') )
       JToolbarHelper::preferences('com_weblinks');
-
   }
   function group_edit() {
     JToolBarHelper::title(WBADVERT_TITLE.' '.JText::_('TB_GROUPEDIT'), 'addedit.png');
@@ -143,7 +141,7 @@ class wbAdvert_ToolbarHelper {
   }
   function config() {
     JToolBarHelper::title(WBADVERT_TITLE.' '.JText::_('TB_CONFIG'), 'config.png');
-    JToolBarHelper::save('config.save');
+    JToolBarHelper::apply('config.save');
     JToolBarHelper::cancel('config.cancel');
   }
 }

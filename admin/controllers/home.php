@@ -129,7 +129,7 @@ function home_display( $option, $task ){
         <?php
           $paths = Array(
             $wbAdvert_config->getAdPath(),
-            JPATH_ROOT.DS.$wbAdvert_config->get('swf_jsloaderpath','media/com_wbadvert/swfobject/') . '/swfobject.js',
+            JPATH_ROOT.DS.$wbAdvert_config->get('swf_jsloaderpath','media/com_wbadvert/swfobject/') . 'swfobject.js',
             $wbAdvert_config->getAdPath() . '/wbadvert_wrapper.swf',
           );
           echo '<table border="0" cellpadding="2" cellspacing="0">';

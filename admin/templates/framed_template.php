@@ -3,7 +3,7 @@
 /*
   - wbAdvert Component for Joomla! -------------------------------------------------------
 
-  Version:        2.5.0
+  Version:        3.0.0
   Release Date:   05/01/07
   Last Modified:  2013-03-28
   Developer:      David Hunt

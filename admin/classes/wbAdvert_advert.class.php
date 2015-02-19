@@ -212,7 +212,9 @@ class wbAdvert_advert extends JTable {
           http://code.google.com/p/swfobject/wiki/documentation
         */
         $advert->swf_cell = 'wbadvert_swf_'.rand($advert->id,time());
-        $advert->code = '<div id="'.$advert->swf_cell.'"></div>'
+        $advert->code = '<div id="'.$advert->swf_cell.'">'
+                      . ( !empty($advert->code) ? $advert->code : '<p><b>'. JText::_('ERR_FLASH_REQUIRED') .'</b> <a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>' )
+                      . '</div>'
                       . '<script type="text/javascript">swfobject.embedSWF("'.$advert->src.'","'.$advert->swf_cell.'","'.$advert->width.'","'.$advert->height.'","9.0.0","expressInstall.swf",{},{wmode:\'transparent\'},{});</script>';
       }
 

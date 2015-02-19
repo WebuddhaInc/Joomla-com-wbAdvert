@@ -43,7 +43,6 @@ function config_save( $option ) {
 
   $errors = array();
   $params = JRequest::getVar( 'params', Array(), 'method', 'array' );
-  inspect( $_REQUEST );
   if(count($params)) {
     $txt = array();
 

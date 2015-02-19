@@ -113,7 +113,9 @@ class wbAdvert_Common {
   function adminHeader(){
     global $task, $option;
     $document =& JFactory::getDocument();
-    $document->addStyleSheet("components/com_wbadvert/inc/admin.css",'text/css',"screen");
+    $document->addStyleSheet(WBADVERT_SITE_LOCAL . 'administrator/components/com_wbadvert/inc/admin.css','text/css',"screen");
+    $wbAdvert_config = wbAdvert_config::getInstance();
+    $document->addScript(WBADVERT_SITE_LOCAL . $wbAdvert_config->get('swf_jsloaderpath','media/com_wbadvert/swfobject/') . 'swfobject.js');
     echo '<div id="com_wbadvert">';
   }
 
