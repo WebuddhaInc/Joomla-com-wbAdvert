@@ -34,8 +34,7 @@ function home_display( $option, $task ){
   ?>
     <script type="text/javascript">
     <!--
-      function submitbutton(btn){
-        alert( btn);
+      Joomla.submitbutton = function(btn){
         switch(btn){
           case 'link.ticket':
             window.open('https://billing.holodyn.com/submitticket.php?step=2&deptid=2','wbAdvertTicket');
@@ -177,6 +176,7 @@ function home_display( $option, $task ){
           <div style="clear:both;"></div>
           </a>
         </div>
+        <?php /*
         <div class="icon">
           <a href="index.php?option=com_wbadvert&task=campaign">
           <img src="<?php echo JURI::root() ?>administrator/components/com_wbadvert/inc/img/icon_campaign.png" />
@@ -189,6 +189,7 @@ function home_display( $option, $task ){
           <h2><?php echo JText::_('COM_WBADVERT_MENU_KEYWORD'); ?></h2>
           <div style="clear:both;"></div></a>
         </div>
+        */ ?>
         <div class="icon">
           <a href="index.php?option=com_wbadvert&task=group">
           <img src="<?php echo JURI::root() ?>administrator/components/com_wbadvert/inc/img/icon_category.png" />

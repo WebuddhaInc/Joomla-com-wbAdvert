@@ -67,7 +67,7 @@ class wbAdvert_ToolbarHelper {
   }
   function home() {
     JToolBarHelper::title(WBADVERT_TITLE.' '.JText::_('TB_HOME'), 'systeminfo.png');
-    JToolBarHelper::custom('link.forum','html','',JText::_('BTN_FORUM'),false,false);
+    // JToolBarHelper::custom('link.forum','html','',JText::_('BTN_FORUM'),false,false);
     JToolBarHelper::custom('link.ticket','help','',JText::_('BTN_TICKETS'),false,false);
   }
   function advert_list() {
