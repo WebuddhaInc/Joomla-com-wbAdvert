@@ -60,7 +60,7 @@ if( !$total && !preg_match('/^config|^home|^support/',$task) )
     );
 
 // Administrator Heading
-wbAdvert_Common::adminHeader();
+wbAdvert_AdminHelper::htmlHeader();
 
 // Menu Switch
 wbAdvert_ToolbarHelper::submenu( $task );
@@ -308,4 +308,4 @@ switch ($task) {
 }
 
 // Administrator Heading
-wbAdvert_Common::adminFooter();
+wbAdvert_AdminHelper::htmlFooter();

@@ -19,6 +19,9 @@
 // Block Direct Access
 defined( '_JEXEC' ) or die('Access Denied');
 
+// Directory Separator
+defined( 'DS' ) or define('DS', DIRECTORY_SEPARATOR);
+
 // ************************************************************************************************
 //
 // Public Kernel
@@ -26,7 +29,14 @@ defined( '_JEXEC' ) or die('Access Denied');
 // ************************************************************************************************
 
 $_inc = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wbadvert'.DS.'load.php';
-if( file_exists($_inc) ){
+if( !is_readable($_inc) ) {
+
+  $msg = '<h1 alert="alert">'.JText::_('ERR_LOADFAILED').'</h1>';
+  die( $msg );
+
+}
+
+else {
 
   // Include Classes
   require_once($_inc);
@@ -83,11 +93,6 @@ if( file_exists($_inc) ){
         JFactory::getApplication()->redirect( $wbAdvert->url );
      break;
   }
-
-} else {
-
-  $msg = '<h1 alert="alert">'.JText::_('ERR_LOADFAILED').'</h1>';
-  die( $msg );
 
 }
 

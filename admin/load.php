@@ -69,8 +69,9 @@ defined( '_JEXEC' ) or die('Access Denied');
   require_once( WBADVERT_PATH.'classes/wbAdvert_swfHeader.class.php' );
 
 // Load Includes
+  require_once( WBADVERT_PATH.'helpers/common.php' );
   if( defined('WBADVERT_ADMIN') ){
-    require_once( WBADVERT_PATH.'helpers/common.php' );
+    require_once( WBADVERT_PATH.'helpers/admin.php' );
     require_once( WBADVERT_PATH.'helpers/toolbar.php' );
     require_once( WBADVERT_PATH.'controllers/advert.php' );
     require_once( WBADVERT_PATH.'controllers/campaign.php' );

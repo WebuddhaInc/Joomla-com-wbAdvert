@@ -742,13 +742,17 @@ class HTML_wbAdvert {
                   if( strlen($row->idx_groups) ){
                     $idx_groups = explode(',',$row->idx_groups);
                     foreach($lists['group_rows'] AS $group_row){
-                      if(in_array( $group_row->id, $idx_groups )){
+                      if($group_row->id && in_array( $group_row->id, $idx_groups )){
                         $idx_group_links[] = '<a href="index.php?option='.$option.'&task=group.edit&hidemainmenu=1&id='.$group_row->id.'" title="'.JText::sprintf('BTN_EDIT',JText::_('Group')).'">'.$group_row->name .'</a>';
                       }
                     }
+                  }
+                  if( count($idx_group_links) ){
                     echo implode(', ',$idx_group_links);
-                  } else
+                  }
+                  else {
                     echo JText::_('FT_NONE');
+                  }
                   ?></td>
                 <td><?php echo $type_name ?></td>
                 <td><?php echo ($row->date_start==$nullDate?'Never':JHTML::_('date',$row->date_start,JText::_('DATE_FORMAT_LC4'))) ?></td>

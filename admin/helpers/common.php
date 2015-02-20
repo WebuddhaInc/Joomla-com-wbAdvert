@@ -28,6 +28,15 @@ defined( '_JEXEC' ) or die('Access Denied');
 
 class wbAdvert_Common {
 
+  // ------------------------------------------------------------------------ initSwfObject
+  static private $_initSWFObject_loaded = false;
+  static function initSWFObject(){
+    if( !self::$_initSWFObject_loaded ){
+      $document =& JFactory::getDocument();
+      $document->addScript(WBADVERT_SITE_LOCAL . wbAdvert_config::getInstance()->get('swf_jsloaderpath','media/com_wbadvert/swfobject/') . 'swfobject.js');
+    }
+  }
+
   // ------------------------------------------------------------------------ getFormLabel
   function getFormLabel( $label, $helpText=null ){
     if( $helpText )
@@ -107,37 +116,6 @@ class wbAdvert_Common {
     foreach ($actions as $action)
       $perm->set($action->name, $user->authorise($action->name, 'com_wbadvert'.(strlen($asset)?'.'.$asset:'')));
     return $perm;
-  }
-
-  // ------------------------------------------------------------------------ adminHeader
-  function adminHeader(){
-    global $task, $option;
-    $document =& JFactory::getDocument();
-    $document->addStyleSheet(WBADVERT_SITE_LOCAL . 'administrator/components/com_wbadvert/inc/admin.css','text/css',"screen");
-    $wbAdvert_config = wbAdvert_config::getInstance();
-    $document->addScript(WBADVERT_SITE_LOCAL . $wbAdvert_config->get('swf_jsloaderpath','media/com_wbadvert/swfobject/') . 'swfobject.js');
-    echo '<div id="com_wbadvert">';
-  }
-
-  // ------------------------------------------------------------------------ adminHeader
-  function adminFooter(){
-    echo '</div>';
-  }
-
-  // ------------------------------------------------------------------------ adminJumpMenu
-  function adminJumpMenu(){
-    global $task, $option;
-    ?>
-    <font size="-1">
-      Jump to:
-      <a href="index.php?option=<?php echo $option ?>&task=home">Home</a>,
-      <a href="index.php?option=<?php echo $option ?>&task=advert">Advertisements</a>,
-      <a href="index.php?option=<?php echo $option ?>&task=client">Clients</a>,
-      <a href="index.php?option=<?php echo $option ?>&task=group">Groups</a>,
-      <a href="index.php?option=<?php echo $option ?>&task=config">Setup</a>,
-      <a href="index.php?option=<?php echo $option ?>&task=support">Support</a>
-    </font>
-    <?php
   }
 
 }
