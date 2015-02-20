@@ -281,9 +281,14 @@ function advert_edit( $id, $option ) {
     $lists['idx_menu'] = JHTML::_('select.genericlist', $menu_list, 'idx_menu[]', 'class="inputbox idx_menu" multiple="true"','value', 'text', $idx_menus);
 
   // Build Content Select List
-    $db->setQuery("SELECT content_id FROM `#__wbadvert_idx_content` WHERE `advert_id` = '$row->id'");
-    $idx_temps = $db->loadResultArray(); $idx_content = Array();
-    foreach( $idx_temps AS $idx_temp ) if( $idx_temp ) $idx_content[] = $idx_temp;
+    $idx_content = array();
+    $db->setQuery("SELECT `content_id` FROM `#__wbadvert_idx_content` WHERE `advert_id` = '$row->id'");
+    $tmpRows = $db->loadObjectList(); echo $db->getErrorMsg();
+    if( $tmpRows ){
+      foreach( $tmpRows AS $tmpResult ){
+        $idx_content[] = $tmpResult->content_id;
+      }
+    }
     $row->idx_content = join(',',$idx_content);
 
   // Build Target Select List
@@ -439,7 +444,7 @@ function advert_save( $id, $option, $task ) {
 
   // Save Content Index
   $idx_content = Array();
-  $idx_temps = explode( ',', JRequest::getVar( 'idx_content', '' ) );
+  $idx_temps = explode( ',', preg_replace('/[\r\n\t]/',',',JRequest::getVar( 'idx_content', '' )) );
   foreach( $idx_temps AS $idx_temp )
     if( (int)$idx_temp > 0 )
       $idx_content[] = (int)$idx_temp;
