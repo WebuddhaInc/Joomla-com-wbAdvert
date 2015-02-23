@@ -1,7 +1,7 @@
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_advert` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_advert` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `client_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `name` varchar(50) NOT NULL DEFAULT '',
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `jos_wbadvert_advert` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_campaign` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_campaign` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `imptotal` int(11) NOT NULL DEFAULT '0',
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `jos_wbadvert_campaign` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_client` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_client` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(60) NOT NULL DEFAULT '',
   `contact` varchar(60) NOT NULL DEFAULT '',
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `jos_wbadvert_client` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_group` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_group` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL DEFAULT '',
   `description` text NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `jos_wbadvert_group` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_keyword` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_keyword` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `synonym_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `keyword` varchar(32) NOT NULL DEFAULT '',
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `jos_wbadvert_keyword` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_category` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_idx_category` (
   `advert_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `campaign_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `category_id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_category` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_client` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_idx_client` (
   `advert_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `campaign_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `client_id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_client` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_content` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_idx_content` (
   `advert_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `campaign_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `content_id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_content` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_group` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_idx_group` (
   `advert_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `campaign_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `group_id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_group` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_keyword` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_idx_keyword` (
   `advert_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `campaign_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `keyword_id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_keyword` (
 
 -- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `jos_wbadvert_idx_menu` (
+CREATE TABLE IF NOT EXISTS `#__wbadvert_idx_menu` (
   `advert_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `campaign_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `menu_id` bigint(20) unsigned NOT NULL DEFAULT '0',
