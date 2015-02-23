@@ -36,11 +36,11 @@
   <scriptfile>installer.php</scriptfile>
   -->
 
-  <files folder="site">
+  <files folder="client">
     <filename>index.html</filename>
     <filename>wbadvert.php</filename>
   </files>
-  <languages folder="site">
+  <languages folder="client">
     <language tag="en-GB">language/en-GB.com_wbadvert.ini</language>
     <language tag="en-GB">language/en-GB.com_wbadvert.sys.ini</language>
   </languages>
