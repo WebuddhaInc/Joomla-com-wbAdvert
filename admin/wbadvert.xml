@@ -42,8 +42,8 @@
     <folder>language</folder>
   </files>
   <languages folder="client">
-    <language tag="en-GB">language/en-GB.com_wbadvert.ini</language>
-    <language tag="en-GB">language/en-GB.com_wbadvert.sys.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.com_wbadvert.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.com_wbadvert.sys.ini</language>
   </languages>
   <media destination="com_wbadvert" folder="media">
     <folder>adverts</folder>
@@ -81,8 +81,8 @@
       <folder>templates</folder>
     </files>
     <languages folder="admin">
-      <language tag="en-GB">language/en-GB.com_wbadvert.ini</language>
-      <language tag="en-GB">language/en-GB.com_wbadvert.sys.ini</language>
+      <language tag="en-GB">language/en-GB/en-GB.com_wbadvert.ini</language>
+      <language tag="en-GB">language/en-GB/en-GB.com_wbadvert.sys.ini</language>
     </languages>
   </administration>
 
