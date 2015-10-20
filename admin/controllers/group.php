@@ -410,8 +410,7 @@ class HTML_wbAdvert_group {
     JHTML::_('behavior.tooltip');
     ?>
     <script language="javascript">
-    <!--
-    function submitbutton(pressbutton) {
+    Joomla.submitbutton = function(pressbutton) {
       var form = document.adminForm;
       if (pressbutton == 'group.cancel') {
         submitform( pressbutton );
@@ -424,7 +423,6 @@ class HTML_wbAdvert_group {
         submitform( pressbutton );
       }
     }
-    //-->
     </script>
     <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=group.edit'); ?>" method="post" name="adminForm" id="adminForm">
       <table class="adminHeading" width="100%">

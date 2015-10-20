@@ -211,7 +211,7 @@ function advert_edit( $id, $option ) {
     if(!$db->query()){echo $db->stderr();return;};
     $client_list = Array( JHTML::_('select.option', '0', JText::_('LIST_CLIENTSELECT') ) );
     $client_list = array_merge( $client_list, $db->loadObjectList() );
-    $lists['client_id'] = JHTML::_('select.genericlist', $client_list, 'client_id', 'class="inputbox" size="1"','value', 'text', $row->client_id);
+    $lists['client_id'] = JHTML::_('select.genericlist', $client_list, 'client_id', 'class="inputbox" size="1" required="true"','value', 'text', $row->client_id);
 
   // Query Groups
     $idx_groups = array();
@@ -227,7 +227,7 @@ function advert_edit( $id, $option ) {
     $db->setQuery("SELECT id AS value, name AS text FROM `#__wbadvert_group` ORDER BY module_id, ordering, name");
     if(!$db->query()){echo $db->stderr();return;};
     $group_list = $db->loadObjectList();
-    $lists['idx_group'] = JHTML::_('select.genericlist', $group_list, 'idx_group[]', 'class="inputbox idx_group" multiple="true"','value', 'text', $idx_groups);
+    $lists['idx_group'] = JHTML::_('select.genericlist', $group_list, 'idx_group[]', 'class="inputbox idx_group" multiple="true" required="true"','value', 'text', $idx_groups);
 
   // Query Categories
     $idx_categories = array();
@@ -482,10 +482,11 @@ function advert_save( $id, $option, $task ) {
 // ------------------------------------------------------------------------ advert_save
 function advert_cancel( $id, $option ) {
   $app = JFactory::getApplication();
-  $db =& JFactory::getDBO();
-  $row = new wbAdvert_advert($db);
-  if( $id ) $row->load( $id );
-  $row->checkin();
+  if( $id ){
+    $row = new wbAdvert_advert( JFactory::getDBO() );
+    $row->load( $id );
+    $row->checkin();
+  }
   $app->redirect( 'index.php?option='.WBADVERT_NAME.'&task=advert', JText::sprintf('MSG_CANCELLED', JText::_('Advertisement')) );
 }
 
@@ -606,7 +607,7 @@ class HTML_wbAdvert {
         Joomla.tableOrdering(order, dirn, '');
       }
     </script>
-    <script language="javascript"><!--
+    <script>
       function submitResetFilters(){
         $('filter_search').value='';
         $('filter_ad_size').options[0].selected=true;
@@ -614,8 +615,8 @@ class HTML_wbAdvert {
         $('filter_group_id').options[0].selected=true;
         submitbutton('advert');
       }
-    //--></script>
-    <style><!--
+    </script>
+    <style>
       .adminlist thead tr th { text-align:left; }
       .adminlist thead th:nth-child(1) { width:20px; }
       <?php if($filters['group_id']){ ?>
@@ -636,7 +637,7 @@ class HTML_wbAdvert {
       .adminlist tbody td:nth-child(14) { text-align:center!important; }
       <?php } ?>
       .adminlist tbody td { vertical-align:top; }
-    //--></style>
+    </style>
     <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=advert'); ?>" method="post" name="adminForm" id="adminForm">
       <input type="hidden" name="filter_order" value="<?php echo $lists['order']; ?>" />
       <input type="hidden" name="filter_order_Dir" value="<?php echo $lists['order_Dir']; ?>" />
@@ -821,7 +822,7 @@ class HTML_wbAdvert {
     $db =& JFactory::getDBO();
     $wbAdvert = new wbAdvert_advert( $db );
     ?>
-    <script language="javascript"><!--
+    <script>
       var dimRatio = '<?php echo ($row->width?($row->height / $row->width):0) ?>';
       function dimCheck( myObj ){
         if( !dimRatio )return;
@@ -839,7 +840,7 @@ class HTML_wbAdvert {
           return form[fieldName].options[form[fieldName].selectedIndex].value;
         return 0;
       }
-      function submitbutton(pressbutton) {
+      Joomla.submitbutton = function(pressbutton) {
         var form = document.adminForm;
         if (pressbutton == 'advert.cancel') {
           submitform( pressbutton );
@@ -848,13 +849,17 @@ class HTML_wbAdvert {
         // do field validation
         if (form.name.value == "") {
           alert( "<?php echo JText::_('FLD_VAL_ADVERTNAME'); ?>" );
-        } else if (getSelectedValue('adminForm','client_id') < 1) {
+        }
+        else if (getSelectedValue('adminForm','client_id') < 1) {
           alert( "<?php echo JText::_('FLD_VAL_ADVERTCLIENT'); ?>" );
-        } else if (getSelectedValue('adminForm','idx_group') < 1) {
+        }
+        else if (getSelectedValue('adminForm','idx_group') < 1) {
           alert( "<?php echo JText::_('FLD_VAL_ADVERTGROUP'); ?>" );
-        } else if (form.id.value == '' && form.code.value == '' && form.advert_file.value == ''){
+        }
+        else if (form.id.value == '' && form.code.value == '' && form.advert_file.value == ''){
           alert( "<?php echo JText::_('FLD_VAL_ADVERTADMEDIA'); ?>" );
-        } else {
+        }
+        else {
           submitform( pressbutton );
         }
       }
@@ -866,13 +871,13 @@ class HTML_wbAdvert {
           fields[i].disabled = isAll?true:false;
         }
       }
-    //--></script>
-    <style><!--
+    </script>
+    <style>
       .adminform select.idx_menu { width:400px; height:190px; }
       .adminform select.idx_category { width:400px; height:190px; }
       .adminform textarea.idx_content { width:400px;height:80px; }
       .adminform textarea.code { width:360px;height:140px; }
-    //--></style>
+    </style>
     <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=advert.edit'); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
       <table class="adminHeading" width="100%">
         <tr><th class="icon-48-advert">
@@ -888,7 +893,7 @@ class HTML_wbAdvert {
               <table class="adminTable" width="100%">
                 <tr>
                   <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_ADVERTNAME'), JText::_('FLD_ADVERTNAME_TIP') ); ?></td>
-                  <td><input class="inputbox" type="text" name="name" size="30" value="<?php echo $row->name ?>"></td>
+                  <td><input class="inputbox" type="text" name="name" size="30" value="<?php echo $row->name ?>" required="true"></td>
                 </tr>
                 <tr>
                   <td valign="top"><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_ADVERTGROUPIDX'), JText::_('FLD_ADVERTGROUPIDX_TIP') ); ?></td>
@@ -922,7 +927,7 @@ class HTML_wbAdvert {
                 </tr>
                 <tr>
                   <td><?php echo wbAdvert_Common::getFormLabel( JText::_('FLD_DATESTOP'), JText::_('FLD_DATESTOP_TIP') ); ?></td>
-                  <td><?php echo JHTML::_('calendar', $row->date_stop, 'date_stop', 'date_stop_cal', '%Y-%m-%d', array('class' => 'inputbox')) ?></td>
+                  <td><?php echo JHTML::_('calendar', ($row->date_stop == 'Never' ? null : $row->date_stop), 'date_stop', 'date_stop_cal', '%Y-%m-%d', array('class' => 'inputbox')) ?></td>
                 </tr>
               </table>
             </fieldset>

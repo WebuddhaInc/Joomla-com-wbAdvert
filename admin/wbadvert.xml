@@ -5,10 +5,10 @@
   <author>Webuddha.com, David Hunt</author>
   <authorEmail>wbadvert@webuddha.com</authorEmail>
   <authorUrl>http://www.webuddha.com</authorUrl>
-  <creationDate>2015-02-15</creationDate>
+  <creationDate>2015-10-20</creationDate>
   <copyright>(c)2007-2015 Webuddha.com, Holodyn Corporation</copyright>
   <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-  <version>3.0.1</version>
+  <version>3.0.2</version>
   <description>wbAdvert Advanced Advertisement and Banner Management System.</description>
 
   <installfile>install.wbadvert.php</installfile>

@@ -215,7 +215,7 @@ class HTML_wbAdvert_client {
     $my = jFactory::getUser();
     JHTML::_('behavior.tooltip');
     ?>
-    <style><!--
+    <style>
       .adminlist thead tr th { text-align:left; }
       .adminlist thead th:nth-child(6),
       .adminlist thead th:nth-child(7),
@@ -225,7 +225,7 @@ class HTML_wbAdvert_client {
       .adminlist tbody td:nth-child(7),
       .adminlist tbody td:nth-child(8),
       .adminlist tbody td:last-child { text-align:center!important; }
-    //--></style>
+    </style>
     <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=client'); ?>" method="post" name="adminForm" id="adminForm">
       <input type="hidden" name="filter_order" value="<?php echo $lists['order']; ?>" />
       <input type="hidden" name="filter_order_Dir" value="<?php echo $lists['order_Dir']; ?>" />
@@ -302,9 +302,8 @@ class HTML_wbAdvert_client {
     JFilterOutput::objectHTMLSafe( $row, ENT_QUOTES, 'extrainfo' );
     JHTML::_('behavior.tooltip');
     ?>
-    <script language="javascript">
-    <!--
-    function submitbutton(pressbutton) {
+    <script>
+    Joomla.submitbutton = function(pressbutton) {
       var form = document.adminForm;
       if (pressbutton == 'client.cancel') {
         submitform( pressbutton );
@@ -317,7 +316,6 @@ class HTML_wbAdvert_client {
         submitform( pressbutton );
       }
     }
-    //-->
     </script>
     <form action="<?php echo JRoute::_('index.php?option=com_wbadvert&task=client.edit'); ?>" method="post" name="adminForm" id="adminForm">
       <table class="adminHeading" width="100%">
