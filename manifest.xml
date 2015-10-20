@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+  <update>
+    <name>wbAdvert Extension Package</name>
+    <description>wbAdvert Component Extension for Joomla! CMS</description>
+    <element>pkg_weblinks</element>
+    <type>package</type>
+    <version>3.0.2</version>
+    <client>site</client>
+    <infourl title="wbAdvert Component Extension Package">https://github.com/WebuddhaInc/Joomla-com-wbAdvert/releases/tag/3.0.2</infourl>
+    <downloads>
+      <downloadurl type="full" format="zip">https://github.com/WebuddhaInc/Joomla-com-wbAdvert/releases/download/3.0.2/com_wbadvert_3.0.2.zip</downloadurl>
+    </downloads>
+    <targetplatform name="joomla" version="3.4" />
+  </update>
+</updates>

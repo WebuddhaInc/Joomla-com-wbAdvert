@@ -24,15 +24,16 @@
       <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
     </sql>
   </uninstall>
-
-  <!-- Runs on update; New in 1.6
   <update>
     <schemas>
       <schemapath type="mysql">sql/updates/mysql</schemapath>
     </schemas>
   </update>
-  -->
-  <!-- Installer / Uninstaller; New in v1.6
+  <updateservers>
+    <server type="extension" priority="1" name="GitHub">https://raw.githubusercontent.com/WebuddhaInc/Joomla-com-wbAdvert/master/manifest.xml</server>
+  </updateservers>
+  <!--
+  Installation Helper
   <scriptfile>installer.php</scriptfile>
   -->
 
