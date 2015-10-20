@@ -8,18 +8,19 @@
   <creationDate>2015-10-20</creationDate>
   <copyright>(c)2007-2015 Webuddha.com, Holodyn Corporation</copyright>
   <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-  <version>3.0.2</version>
+  <version>3.0.1</version>
   <description>wbAdvert Advanced Advertisement and Banner Management System.</description>
 
-  <installfile>install.wbadvert.php</installfile>
-  <install> <!-- Runs on install -->
+  <!--
+  Installation Helper
+  <scriptfile>installer.php</scriptfile>
+  -->
+  <install>
     <sql>
       <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
     </sql>
   </install>
-
-  <uninstallfile>uninstall.wbadvert.php</uninstallfile>
-  <uninstall> <!-- Runs on uninstall -->
+  <uninstall>
     <sql>
       <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
     </sql>
@@ -30,12 +31,8 @@
     </schemas>
   </update>
   <updateservers>
-    <server type="extension" priority="1" name="GitHub">https://raw.githubusercontent.com/WebuddhaInc/Joomla-com-wbAdvert/master/manifest.xml</server>
+    <server type="extension" priority="1" name="wbAdvert Component for Joomla! CMS">https://raw.githubusercontent.com/WebuddhaInc/Joomla-com-wbAdvert/master/manifest.xml</server>
   </updateservers>
-  <!--
-  Installation Helper
-  <scriptfile>installer.php</scriptfile>
-  -->
 
   <files folder="client">
     <file>index.html</file>

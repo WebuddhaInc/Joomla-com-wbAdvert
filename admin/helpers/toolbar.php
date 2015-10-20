@@ -121,7 +121,7 @@ class wbAdvert_ToolbarHelper {
     JToolBarHelper::deleteList(JText::_('VALIDDELETEITEMS'),'group.delete');
     $canDo = wbAdvert_Common::userGetPermissions();
     if( $canDo->get('core.admin') )
-      JToolbarHelper::preferences('com_weblinks');
+      JToolbarHelper::preferences('com_wbadvert');
   }
   function group_edit() {
     JToolBarHelper::title(WBADVERT_TITLE.' '.JText::_('TB_GROUPEDIT'), 'addedit.png');
